@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.alpo.example</groupId>
-    <artifactId>sb_mustache</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>jitter</artifactId>
+    <version>0.0.2-Sweater</version>
     <packaging>jar</packaging>
 
-    <name>sb_mustache</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Jitter</name>
+    <description>Jitter Java Developers Community</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
