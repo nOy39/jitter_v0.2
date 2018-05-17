@@ -15,6 +15,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String head;
     private String text;
     private String tag;
 
@@ -27,15 +28,25 @@ public class Message {
     public Message() {
     }
 
-    public Message(String text, String tag, User author) {
+    public Message( String head, String text, String tag, User author) {
         this.text = text;
         this.tag = tag;
         this.author = author;
+        this.head = head;
+    }
+
+    public String getHead() {
+        return head;
+    }
+
+    public void setHead(String head) {
+        this.head = head;
     }
 
     public String getAuthorName() {
         return author != null ? author.getUsername():"<none>";
     }
+
     public long getId() {
         return id;
     }

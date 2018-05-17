@@ -1,9 +1,60 @@
 <#import "parts/common.ftl" as c>
+<#include "parts/security.ftl">
 <@c.page>
-<h5>Hello guest</h5>
 <div>
     <span>
-        This is simple clone twitters, for learning working with Spring Boot.
+      <h2>Hello, ${name?ifExists}!!!</h2>
     </span>
+</div>
+<style>
+    /* Add a dark gray background color to the modal header and center text */
+    .modal-header, h4, .close {
+        background-color: #333;
+        color: #fff !important;
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .modal-header, .modal-body {
+        padding: 40px 50px;
+    }
+</style>
+
+<!-- Used to open the Modal -->
+<button class="btn" data-toggle="modal" data-target="#myModal">Registration</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4><span class="glyphicon glyphicon-lock"></span> Tickets</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="psw"><span class="glyphicon glyphicon-shopping-cart"></span> Tickets, $23 per person</label>
+                        <input type="number" class="form-control" id="psw" placeholder="How many?">
+                    </div>
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-user"></span> Send To</label>
+                        <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+                    </div>
+                    <button type="submit" class="btn btn-block">Pay
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </button>
+                <p>Need <a href="#">help?</a></p>
+            </div>
+        </div>
+    </div>
 </div>
 </@c.page>

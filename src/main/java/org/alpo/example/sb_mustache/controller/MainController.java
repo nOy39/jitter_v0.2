@@ -33,13 +33,16 @@ public class MainController {
     @Value("${upload.path}")
     private String uploadPath;
 
-    @Value("${app.welcome.title}")
     private String TITLE = "";
 
 
     @GetMapping("/")
-    public String welcome(Map<String, Object> model) {
-        model.put("title", TITLE);
+    public String welcome(Model model) {
+        Iterable<Message> messages;
+
+        messages = messageRepo.findAll();
+        model.addAttribute("messages", messages);
+
         return "welcome";
     }
 
@@ -63,7 +66,7 @@ public class MainController {
             @RequestParam String text,
             @RequestParam String tag, Map<String, Object> model,
             @RequestParam("file") MultipartFile file) {
-        Message message = new Message(text, tag, user);
+        Message message = new Message("Заголовок", text, tag, user);
 
         if (file!=null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
