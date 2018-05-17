@@ -48,7 +48,7 @@ public class MainController {
         notes = noteRepo.findAll();
         model.addAttribute("notes", notes);
 
-        return "welcome";
+        return "main";
     }
 
     @GetMapping("/main")

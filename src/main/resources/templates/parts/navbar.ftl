@@ -12,7 +12,7 @@
                 <a class="nav-link" href="/">Note list</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/newnote">New note</a>
+                <a class="nav-link" href="/note/add">New note</a>
             </li>
             <#if isAdmin>
             <li class="nav-item">

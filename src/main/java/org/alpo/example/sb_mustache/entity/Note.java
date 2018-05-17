@@ -20,10 +20,11 @@ public class Note {
     public Note() {
     }
 
-    public Note(String message, boolean done, String date) {
+    public Note(String message, boolean done, String date, User author) {
         this.message = message;
         this.done = done;
         this.date = date;
+        this.author = author;
     }
 
     public Long getId() {
