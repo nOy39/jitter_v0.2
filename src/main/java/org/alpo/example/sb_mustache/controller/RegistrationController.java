@@ -1,6 +1,6 @@
 package org.alpo.example.sb_mustache.controller;
 
-import org.alpo.example.sb_mustache.domain.User;
+import org.alpo.example.sb_mustache.entity.User;
 import org.alpo.example.sb_mustache.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +20,10 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
 
+
     @Autowired
     private UserService userService;
+
 
     @GetMapping("/registration")
     public String registration() {
@@ -34,7 +36,7 @@ public class RegistrationController {
             model.put("message", "User exist");
             return "registration";
         }
-        return "redirect:/login";
+        return "redirect:/";
     }
 
     @GetMapping("/activate/{code}")
@@ -46,6 +48,6 @@ public class RegistrationController {
         } else {
             model.addAttribute("message","Activation code is not found.");
         }
-        return "login";
+        return "/";
     }
 }

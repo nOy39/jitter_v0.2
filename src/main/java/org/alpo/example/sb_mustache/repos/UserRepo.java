@@ -1,9 +1,7 @@
 package org.alpo.example.sb_mustache.repos;
 
-import org.alpo.example.sb_mustache.domain.User;
+import org.alpo.example.sb_mustache.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 /**
  * Created by @author OGI aka nOy39

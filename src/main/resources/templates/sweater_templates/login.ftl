@@ -1,5 +1,5 @@
-<#import "parts/common.ftl" as c>
-<#import "parts/sign.ftl" as l>
+<#import "../parts/common.ftl" as c>
+<#import "../parts/sign.ftl" as l>
 
 <@c.page>
     ${message?ifExists}

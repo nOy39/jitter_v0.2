@@ -1,8 +1,10 @@
 package org.alpo.example.sb_mustache.controller;
 
-import org.alpo.example.sb_mustache.domain.Message;
-import org.alpo.example.sb_mustache.domain.User;
+import org.alpo.example.sb_mustache.entity.Message;
+import org.alpo.example.sb_mustache.entity.Note;
+import org.alpo.example.sb_mustache.entity.User;
 import org.alpo.example.sb_mustache.repos.MessageRepo;
+import org.alpo.example.sb_mustache.repos.NoteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +32,9 @@ public class MainController {
     @Autowired
     private MessageRepo messageRepo;
 
+    @Autowired
+    private NoteRepo noteRepo;
+
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -38,10 +43,10 @@ public class MainController {
 
     @GetMapping("/")
     public String welcome(Model model) {
-        Iterable<Message> messages;
+        Iterable<Note> notes;
 
-        messages = messageRepo.findAll();
-        model.addAttribute("messages", messages);
+        notes = noteRepo.findAll();
+        model.addAttribute("notes", notes);
 
         return "welcome";
     }

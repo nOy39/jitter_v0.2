@@ -1,7 +1,7 @@
 package org.alpo.example.sb_mustache.controller;
 
-import org.alpo.example.sb_mustache.domain.Role;
-import org.alpo.example.sb_mustache.domain.User;
+import org.alpo.example.sb_mustache.entity.Role;
+import org.alpo.example.sb_mustache.entity.User;
 import org.alpo.example.sb_mustache.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

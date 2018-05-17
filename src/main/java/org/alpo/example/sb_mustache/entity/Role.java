@@ -1,4 +1,4 @@
-package org.alpo.example.sb_mustache.domain;
+package org.alpo.example.sb_mustache.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 

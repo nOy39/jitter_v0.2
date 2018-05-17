@@ -1,4 +1,4 @@
-package org.alpo.example.sb_mustache.domain;
+package org.alpo.example.sb_mustache.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -115,4 +115,5 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
 }

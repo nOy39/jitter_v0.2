@@ -1,8 +1,7 @@
 package org.alpo.example.sb_mustache.repos;
 
-import org.alpo.example.sb_mustache.domain.Message;
+import org.alpo.example.sb_mustache.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

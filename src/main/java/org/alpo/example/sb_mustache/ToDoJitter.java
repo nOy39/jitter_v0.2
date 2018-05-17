@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SbMustacheApplication {
+public class ToDoJitter {
 
     public static void main(String[] args) {
-        SpringApplication.run(SbMustacheApplication.class, args);
+        SpringApplication.run(ToDoJitter.class, args);
     }
 }

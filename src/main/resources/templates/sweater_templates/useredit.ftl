@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c>
+<#import "../parts/common.ftl" as c>
 <@c.page>
 <form action="/users" method="post">
     <input type="text" name="username" value="${user.username}">
