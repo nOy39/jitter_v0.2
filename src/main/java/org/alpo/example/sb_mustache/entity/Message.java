@@ -8,6 +8,7 @@ import javax.persistence.*;
  * @Date 07.05.2018
  * @Time 15:56
  */
+@Deprecated
 @Entity
 public class Message {
 

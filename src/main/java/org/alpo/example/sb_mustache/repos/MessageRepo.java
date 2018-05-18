@@ -12,6 +12,7 @@ import java.util.List;
  * @Date 07.05.2018
  * @Time 15:59
  */
+@Deprecated
 public interface MessageRepo extends JpaRepository<Message, Long> {
     List<Message> findByTagOrTextContainingIgnoreCase(String tag, String text);
 }

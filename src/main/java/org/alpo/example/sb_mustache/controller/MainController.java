@@ -29,8 +29,6 @@ import java.util.UUID;
  */
 @Controller
 public class MainController {
-    @Autowired
-    private MessageRepo messageRepo;
 
     @Autowired
     private NoteRepo noteRepo;
@@ -49,60 +47,6 @@ public class MainController {
         model.addAttribute("notes", notes);
 
         return "main";
-    }
-
-    @GetMapping("/main")
-    public String testor(@RequestParam(required = false) String filter, Model model) {
-        Iterable<Message> messages;
-
-        if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByTagOrTextContainingIgnoreCase(filter,filter);
-        } else {
-            messages = messageRepo.findAll();
-        }
-        model.addAttribute("messages", messages);
-        model.addAttribute("filter", filter);
-        return "main";
-    }
-
-    @PostMapping(value = "/main")
-    public String add(
-            @AuthenticationPrincipal User user,
-            @RequestParam String text,
-            @RequestParam String tag, Map<String, Object> model,
-            @RequestParam("file") MultipartFile file) {
-        Message message = new Message("Заголовок", text, tag, user);
-
-        if (file!=null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String uuid = UUID.randomUUID().toString();
-            String resultFilename = uuid+"."+file.getOriginalFilename();
-
-            try {
-                file.transferTo(new File(uploadPath+"/"+resultFilename));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            message.setFilename(resultFilename);
-        }
-        messageRepo.save(message);
-
-        Iterable<Message> messages = messageRepo.findAll();
-
-        model.put("messages", messages);
-
-        return "main";
-    }
-
-    @GetMapping(value = "/delete/{message}")
-    public String userDeleteForm(@PathVariable Message message, Model model) {
-        messageRepo.deleteById(message.getId());
-        return "redirect:/";
     }
 
 }
