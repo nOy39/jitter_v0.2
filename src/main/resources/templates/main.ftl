@@ -1,66 +1,105 @@
 <#import "parts/common.ftl" as c>
 <#include "parts/security.ftl">
 <@c.page>
-<div>
-    <span>
-      <h2>Hello, ${name?ifExists}!!!</h2>
-        <input class="form-control" id="myInput" type="text" placeholder="Search..">
-    </span>
+<div class="py-5" id="search_container">
+    <div class="row">
+        <div class="container col-xl-10" style="background-image: url('static/img/50p.png'); height: 50px">
+            <div></div>
+            <form action="/search">
+                <div class="input-group col-xl-12" style="position: relative; top: 5px">
+                    <input type="text" class="form-control" placeholder="Search" name="search">
+                    <div class="input-group-btn">
+                        <button class="btn navbar-btn" type="submit" style="background-image: url('static/img/50p.png');">
+                            <i class="fas d-inline fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <div>
+        <form class="form" method="post" action="/notes/add">
+            <div ng-app="">
+                <div class="input-group">
+                    <input class="form-control" name="text" ng-model="name" ng-trim="false" maxlength="255" type="text" placeholder="Add task...">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <button type="submit" class="btn btn-primary ml-2"><span class="fas fa-plus" style="font-size: 100%; color: white"> ADD</button>
+                    </body>
+                </div>
+                <span>{{255 - name.length}} left</span>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div>
-    <form class="form-inline" method="post" action="/notes/add">
+<div class="container" id="task_table">
+    <form method="post" action="notes/">
+        <div class="py-5">
+            <div class="container">
+                <div class="row" style="background-image: url('static/img/50p.png');">
+                    <div class="col-md-12">
+                        <table class="table text-center">
+                            <thead>
+                            <tr>
+                                <th class="text-light">ID</th>
+                                <th class="text-center text-light">Task</th>
+                                <th class="text-center text-light">Date</th>
+                                <th class="text-light">Status</th>
+                                <th class="text-light">Manage</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <#list notes as note>
+                                <tr>
+                                    <td class="text-light text-left">
+                                        ${note.done?string("<del>","")}
+                                        ${note.id}
+                                        ${note.done?string("</del>","")}
+                                    </td>
+                                    <td class="text-light text-left">
+                                        ${note.done?string("<del>","")}
+                                        ${note.message}
+                                        ${note.done?string("</del>","")}
+                                    </td>
+                                    <td class="text-light text-left">
+                                        ${note.done?string("<del>","")}
+                                        ${note.date}
+                                        ${note.done?string("</del>","")}
+                                    </td>
+                                    <td class="text-light text-center">
+                                    <#if !note.done>
+                                        <span style="font-size: 110%; color: tomato" class="far fa-times-circle"></span>
+                                    <#else>
+                                        <span style="font-size: 110%; color: green" class="far fa-check-circle"></span>
+                                    </#if>
+                                    </td>
+                                    <td class="text-light text-center">
+                                    <#if !note.done>
+                                        <a href="notes/${note.id}">
+                                            <span class="fas fa-check-circle" style="font-size: 110%; color: green"/>
+                                        </a>
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <#else>
+                                        <a href="/notes/delete/">
+                                            <span class="fas fa-trash-alt" style="font-size: 110%; color: tomato"/>
+                                        </a>
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    </#if>
+                                    </td>
 
-        <input type="text" name="text" class="form-control" placeholder="Search by Text og Tag">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit" class="btn btn-primary">Add</button>
+                                </tr>
+                                </#list>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
-<form method="post" action="notes/">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th scope="col">message</th>
-            <th scope="col">date</th>
-            <th scope="col">done</th>
-            <th>manage</th>
-        </tr>
-        </thead>
-    <#list notes as note>
-    <div>
-        <tr>
-            <p class="text-${note.done?string("mutted","primary")}">
-                ${note.done?string("<del>","")}
-            <td>${note.done?string("<del>","")}${note.id}${note.done?string("</del>","")}</td>
-            <td>${note.done?string("<del>","")}${note.message}${note.done?string("</del>","")}</td>
-            <td>${note.done?string("<del>","")}${note.date}${note.done?string("</del>","")}</td>
-            </del>
-        <#--${note.done},-->
-        <#--${note.author}-->
-            <td>
-                <#if !note.done>
-                    <span style="font-size: 150%; color: tomato" class="fas fa-clipboard-list"></span>
-                <#else>
-                   <span style="font-size: 150%; color: green" class="fas fa-clipboard-check"></span>
-                </#if>
-            </td>
 
-            </p>
-            <td>
-                <#if !note.done>
-                    <button type="submit" formaction="notes/${note.id}" class="btn btn-outline-light  col-sm-6"><span class="fas fa-check-circle" style="font-size: 150%; color: green"></span></button>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <#else>
-                    <button type="submit" formaction="notes/delete/${note.id}" class="btn btn-outline-light  col-sm-6"><span class="fas fa-trash-alt" style="font-size: 150%; color: tomato"></span></button>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                </#if>
-                </p>
-            </td>
-        </tr>
-    </div>
-    </#list>
-    </table>
-</form>
 
 </@c.page>

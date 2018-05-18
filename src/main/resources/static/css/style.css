@@ -1,3 +1,9 @@
 body{
     color: #113;
 }
+glass_50{
+    background-size:cover;
+    background-image: url('static/img/50p.png');
+    background-repeat:space;
+    background-position:left center;
+}
