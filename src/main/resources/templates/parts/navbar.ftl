@@ -16,7 +16,7 @@
                         <i class="far d-inline fa-lg fa-bookmark"></i> Bookmarks</a>
                 </li>
                 <li class="nav-item ml-1 text-center text-white" style="background-image: url('static/img/25p.png');">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/contacts">
                         <i class="fas d-inline fa-envelope my-1"></i> Contacts</a>
                 </li>
             </ul>

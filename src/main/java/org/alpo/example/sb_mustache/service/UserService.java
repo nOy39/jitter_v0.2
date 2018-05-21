@@ -45,6 +45,7 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setUniqID(UUID.randomUUID().toString());
         userRepo.save(user);
 
         sendMessage(user);

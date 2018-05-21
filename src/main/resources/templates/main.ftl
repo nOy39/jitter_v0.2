@@ -1,105 +1,54 @@
 <#import "parts/common.ftl" as c>
-<#include "parts/security.ftl">
+<#import "parts/leftside.ftl" as left>
+
 <@c.page>
-<div class="py-5" id="search_container">
-    <div class="row">
-        <div class="container col-xl-10" style="background-image: url('static/img/50p.png'); height: 50px">
-            <div></div>
-            <form action="/search">
-                <div class="input-group col-xl-12" style="position: relative; top: 5px">
-                    <input type="text" class="form-control" placeholder="Search" name="search">
-                    <div class="input-group-btn">
-                        <button class="btn navbar-btn" type="submit" style="background-image: url('static/img/50p.png');">
-                            <i class="fas d-inline fa-search"></i>
-                        </button>
-                    </div>
-                </div>
+
+<div class="container-fluid text-center">
+    <div class="row content">
+        <@left.page>
+                <a href="/projects" class="btn-outline-primary">User projects</a>
+
+            <a href="/projects/add" class="btn-outline-primary">Add projects</a>
+
+            <form action="post" name="form">
+                <input type="submit" class="btn-outline-primary" placeholder="Create New Desk">
             </form>
-            <div></div>
-        </div>
-    </div>
-</div>
-    <div>
-        <form class="form" method="post" action="/notes/add">
-            <div ng-app="">
-                <div class="input-group">
-                    <input class="form-control" name="text" ng-model="name" ng-trim="false" maxlength="255" type="text" placeholder="Add task...">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button type="submit" class="btn btn-primary ml-2"><span class="fas fa-plus" style="font-size: 100%; color: white"> ADD</button>
-                    </body>
+            <form action="post" name="form">
+                <input type="submit" class="btn-outline-primary" placeholder="Create New Desk">
+            </form>
+            <form action="post" name="form">
+                <input type="submit" class="btn-outline-primary" placeholder="Create New Desk">
+            </form>
+        </@left.page>
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-sm-2 sidenav">
+                    <p><a href="#">Link</a></p>
+                    <p><a href="#">Link</a></p>
+                    <p><a href="#">Link</a></p>
                 </div>
-                <span>{{255 - name.length}} left</span>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="container" id="task_table">
-    <form method="post" action="notes/">
-        <div class="py-5">
-            <div class="container">
-                <div class="row" style="background-image: url('static/img/50p.png');">
-                    <div class="col-md-12">
-                        <table class="table text-center">
-                            <thead>
-                            <tr>
-                                <th class="text-light">ID</th>
-                                <th class="text-center text-light">Task</th>
-                                <th class="text-center text-light">Date</th>
-                                <th class="text-light">Status</th>
-                                <th class="text-light">Manage</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <#list notes as note>
-                                <tr>
-                                    <td class="text-light text-left">
-                                        ${note.done?string("<del>","")}
-                                        ${note.id}
-                                        ${note.done?string("</del>","")}
-                                    </td>
-                                    <td class="text-light text-left">
-                                        ${note.done?string("<del>","")}
-                                        ${note.message}
-                                        ${note.done?string("</del>","")}
-                                    </td>
-                                    <td class="text-light text-left">
-                                        ${note.done?string("<del>","")}
-                                        ${note.date}
-                                        ${note.done?string("</del>","")}
-                                    </td>
-                                    <td class="text-light text-center">
-                                    <#if !note.done>
-                                        <span style="font-size: 110%; color: tomato" class="far fa-times-circle"></span>
-                                    <#else>
-                                        <span style="font-size: 110%; color: green" class="far fa-check-circle"></span>
-                                    </#if>
-                                    </td>
-                                    <td class="text-light text-center">
-                                    <#if !note.done>
-                                        <a href="notes/${note.id}">
-                                            <span class="fas fa-check-circle" style="font-size: 110%; color: green"/>
-                                        </a>
-                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                    <#else>
-                                        <a href="/notes/delete/">
-                                            <span class="fas fa-trash-alt" style="font-size: 110%; color: tomato"/>
-                                        </a>
-                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                    </#if>
-                                    </td>
-
-                                </tr>
-                                </#list>
-                            </tbody>
-
-                        </table>
+                <div class="col-sm-8 text-left">
+                    <h1>Welcome</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <hr>
+                    <h3>Test</h3>
+                    <p>Lorem ipsum...</p>
+                </div>
+                <div class="col-sm-2 sidenav">
+                    <div class="well">
+                        <p>ADS</p>
+                    </div>
+                    <div class="well">
+                        <p>ADS</p>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+        </div>
+    </div>
 </div>
 
-
+<footer class="container-fluid text-center">
+    <p>Footer Text</p>
+</footer>
 </@c.page>

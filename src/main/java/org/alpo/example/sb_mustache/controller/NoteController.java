@@ -1,6 +1,5 @@
 package org.alpo.example.sb_mustache.controller;
 
-import org.alpo.example.sb_mustache.entity.Message;
 import org.alpo.example.sb_mustache.entity.Note;
 import org.alpo.example.sb_mustache.entity.User;
 import org.alpo.example.sb_mustache.repos.NoteRepo;
@@ -12,14 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/notes")
@@ -37,7 +32,7 @@ public class NoteController {
 
         String date = sDateFormat.format(new Date());
 
-        Note note = new Note(text, false, date,user);
+        Note note = new Note(text, 5,false, date,user);
 
         noteRepo.save(note);
 

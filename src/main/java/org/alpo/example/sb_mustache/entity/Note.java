@@ -11,7 +11,9 @@ public class Note {
 
     private String message;
     private boolean done;
-    private String date;
+    private String dateCreated;
+    private String dateComplete;
+    private int priority;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -20,10 +22,11 @@ public class Note {
     public Note() {
     }
 
-    public Note(String message, boolean done, String date, User author) {
+    public Note(String message, int priority, boolean done, String dateCreated, User author) {
         this.message = message;
         this.done = done;
-        this.date = date;
+        this.dateCreated = dateCreated;
+        this.priority = priority;
         this.author = author;
     }
 
@@ -51,11 +54,35 @@ public class Note {
         this.done = done;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getDateComplete() {
+        return dateComplete;
+    }
+
+    public void setDateComplete(String dateComplete) {
+        this.dateComplete = dateComplete;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

@@ -27,12 +27,7 @@
         </div>
     </div>
     <#if isRegisterForm>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Confirm password:</label>
-            <div class="col-sm-4">
-                <input class="form-control" type="password" name="password" placeholder="password"/>
-            </div>
-        </div>
+
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Email:</label>
         <div class="col-sm-4">

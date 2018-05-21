@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 </head>
 
-<body style="background-size: auto;background-image: url('static/img/backgr.jpg'); background-repeat: no-repeat; background-attachment: fixed;" >
+<#--<body style="background-size: auto;background-image: url('static/img/backgr.jpg'); background-repeat: no-repeat; background-attachment: fixed;" >-->
+
+<body>
     <#include "navbar.ftl">
 <div class="container mt-5">
 <#nested>
@@ -23,6 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="/static/js/vue.js"></script>
+<script src="/static/js/jitter.js"/>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.10/angular.min.js"></script>
 </body>
 </html>
