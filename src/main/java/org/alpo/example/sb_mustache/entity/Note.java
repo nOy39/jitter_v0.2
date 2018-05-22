@@ -19,15 +19,21 @@ public class Note {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "desk_id")
+    private Desk desk;
+
+
     public Note() {
     }
 
-    public Note(String message, int priority, boolean done, String dateCreated, User author) {
+    public Note(String message, boolean done, String dateCreated, int priority, User author, Desk desk) {
         this.message = message;
         this.done = done;
         this.dateCreated = dateCreated;
         this.priority = priority;
         this.author = author;
+        this.desk = desk;
     }
 
     public Long getId() {
@@ -70,6 +76,14 @@ public class Note {
         this.dateComplete = dateComplete;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     public User getAuthor() {
         return author;
     }
@@ -78,11 +92,11 @@ public class Note {
         this.author = author;
     }
 
-    public int getPriority() {
-        return priority;
+    public Desk getDesk() {
+        return desk;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setDesk(Desk desk) {
+        this.desk = desk;
     }
 }
