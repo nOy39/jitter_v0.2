@@ -15,6 +15,9 @@ public class Desk {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    private boolean isImportant;
+    private boolean isComplete;
+
     public Desk() {
     }
 
@@ -45,5 +48,32 @@ public class Desk {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public boolean isImportant() {
+        return isImportant;
+    }
+
+    public void setImportant(boolean important) {
+        isImportant = important;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
+    @Override
+    public String toString() {
+        return "Desk{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", project=" + project +
+                ", isImportant=" + isImportant +
+                ", isComplete=" + isComplete +
+                '}';
     }
 }

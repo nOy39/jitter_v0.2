@@ -6,6 +6,7 @@ import org.alpo.example.sb_mustache.entity.Project;
 import org.alpo.example.sb_mustache.entity.User;
 import org.alpo.example.sb_mustache.repos.DeskRepo;
 import org.alpo.example.sb_mustache.repos.NoteRepo;
+import org.alpo.example.sb_mustache.service.DeskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,10 @@ public class DeskController {
     @Autowired
     NoteRepo noteRepo;
 
-    @GetMapping("{project}")
+    @Autowired
+    DeskService deskService;
+
+    @GetMapping("{project}/list/")
     public String deskTemplateView(@PathVariable Project project,
                                    Model model) {
         List<Desk> desks = deskRepo.findAllByProject(project);
@@ -35,32 +39,19 @@ public class DeskController {
         return "desk";
     }
 
-    @PostMapping("{project}")
+    @PostMapping("add")
     public String addDesk(@AuthenticationPrincipal User user,
-                          @PathVariable Project project,
+                          @RequestParam Project project,
                           @RequestParam String deskName,
                           Model model) {
 
         Desk desk = new Desk(deskName,project);
         deskRepo.save(desk);
-        return "redirect:/desk/{project}";
+
+        return deskService.getUrl(project.getId());
 
     }
 
-    @PostMapping(value = "{desk}/note/add")
-    public String addNote(@AuthenticationPrincipal User user,
-                          @PathVariable Desk desk,
-                          @RequestParam String addnote) {
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy, HH:mm");
-
-        String date = sDateFormat.format(new Date());
-
-        Note note = new Note(addnote,false,date,5,user,desk);
-
-        noteRepo.save(note);
-
-        return "redirect:/";
-    }
 
     @GetMapping("details/{desk}")
     public String deskEdit(@PathVariable Desk desk,
@@ -68,4 +59,34 @@ public class DeskController {
         return "deskedit";
     }
 
+    @PostMapping(value = "delete")
+    public String deskDelete(@RequestParam Desk desk,
+                             @RequestParam Project project,
+                             Model model) {
+        deskRepo.delete(desk);
+
+        return deskService.getUrl(project.getId());
+    }
+
+    @PostMapping(value = "uppriority")
+    public String deskUpper(@RequestParam Desk desk,
+                             @RequestParam Project project,
+                             Model model) {
+        desk.setImportant(true);
+
+        deskRepo.save(desk);
+
+        return deskService.getUrl(project.getId());
+    }
+
+    @PostMapping(value = "complete")
+    public String deskComplete(@RequestParam Desk desk,
+                            @RequestParam Project project,
+                            Model model) {
+        desk.setComplete(true);
+
+        deskRepo.save(desk);
+        System.out.println(desk);
+        return deskService.getUrl(project.getId());
+    }
 }

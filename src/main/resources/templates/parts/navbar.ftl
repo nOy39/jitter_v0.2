@@ -28,7 +28,7 @@
                 </li>
                 <li class="uk-nav-divider"></li>
 
-                <a href="" class="uk-icon-button uk-margin-small-right" uk-icon="github-alt"></a>
+                <a href="https://github.com/nOy39/jitter_v0.2" class="uk-icon-button uk-margin-small-right" uk-icon="github-alt"></a>
                 <a href="" class="uk-icon-button  uk-margin-small-right" uk-icon="facebook"></a>
                 <a href="" class="uk-icon-button" uk-icon="google-plus"></a>
 

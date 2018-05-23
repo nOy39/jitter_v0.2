@@ -67,23 +67,15 @@ public class ProjectController {
 
         model.addAttribute("messageDateError","Error date");
 
-            return "add";
-        }
-
-
-
-        @GetMapping(value = "setting/${project}")
-        public String saveEditProject(@RequestParam String name,
-                @RequestParam String description,
-                @RequestParam String deadline,
-                @RequestParam String radioIsPublic,
-                @RequestParam ("projectId") Project project,
-                @AuthenticationPrincipal User user,
-                Model model) {
-
-            projectService.updateProject(project, user, name, description, deadline, radioIsPublic);
-
-            return "redirect:/projects";
-        }
-
+        return "add";
     }
+
+    @GetMapping(value = "setting/{project}")
+    public String settingProject(@AuthenticationPrincipal User user,
+                                  @PathVariable Project project,
+                                  Model model) {
+        model.addAttribute("project",project);
+        return "setting";
+    }
+
+}

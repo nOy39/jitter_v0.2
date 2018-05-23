@@ -27,9 +27,9 @@
                 <span uk-icon="icon: ${project.public?string('social','lock')}"
                       style="color: ${project.public?string('green','red')}"" uk-tooltip=${project.public?string('"Public project"','"Private project"')}></span>
 
-                <a href="/projects/${project.id}" uk-icon="icon: settings" style="color: " uk-tooltip="Setting"></a>
+                <a href="/projects/setting/${project.id}" uk-icon="icon: settings" style="color: " uk-tooltip="Setting"></a>
             </div>
-            <h3 class="uk-card-title"><a href="/desk/setting/${project.id}">${project.prj_name}</a></h3>
+            <h3 class="uk-card-title"><a href="/desk/${project.id}/list/">${project.prj_name}</a></h3>
 
             <p>${project.description}</p>
         </div>
