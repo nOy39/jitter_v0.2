@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.alpo.example</groupId>
-    <artifactId>jitter</artifactId>
-    <version>0.0.2-Sweater</version>
+    <artifactId>jitt3r</artifactId>
+    <version>0.0.3-jitt3r</version>
     <packaging>jar</packaging>
 
-    <name>Jitter</name>
-    <description>Jitter Java Developers Community</description>
+    <name>Jitt3r</name>
+    <description>Jitt3r Java To </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

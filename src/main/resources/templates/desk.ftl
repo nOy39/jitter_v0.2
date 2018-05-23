@@ -30,7 +30,7 @@
                 <li data-color="complete">
                     <div class="uk-card uk-card-secondary uk-card-body">
                         <div class="uk-card-badge uk-position-small uk-position-top-right">
-                            <a href="#modal-trash" uk-toggle uk-icon="icon: trash"></a>
+                            <a href="#modal-trash-${desk.getId()}" uk-toggle uk-icon="icon: trash"></a>
                         </div>
                         <div>
                             ${desk.name}
@@ -38,7 +38,7 @@
                     </div>
                 </li>
             <#--Modal window for delete-->
-            <div id="modal-trash" uk-modal xmlns="http://www.w3.org/1999/html">
+            <div id="modal-trash-${desk.getId()}" uk-modal xmlns="http://www.w3.org/1999/html">
 
                 <div class="uk-modal-dialog uk-modal-body">
                     <form method="post" action="/desk/delete/" name="delete">
@@ -56,69 +56,73 @@
 
             </div>
             <#else >
-
         <li data-color="${desk.important?string('important','normally')}">
             <div class="uk-card uk-card-${desk.important?string('primary','default')} uk-card-body">
                 <div class="uk-card-badge uk-position-small uk-position-top-right">
                     <#if desk.important>
-                        <a href="#modal-complete" uk-toggle uk-icon="icon: check"></a>
+                        <a href="#modal-complete-${desk.getId()}" uk-toggle uk-icon="icon: check"></a>
                     <#else >
-                    <a href="#modal-uppriority" name="${desk.id}" uk-toggle uk-icon="icon: star"></a>
-                    <a href="#modal-complete" uk-toggle uk-icon="icon: check"></a>
-                    <a href="#modal-link" uk-toggle uk-icon="icon: link"></a>
+                    <a href="#modal-uppriority-${desk.getId()}" name="${desk.id}" uk-toggle uk-icon="icon: star"></a>
+                    <a href="#modal-complete-${desk.getId()}" uk-toggle uk-icon="icon: check"></a>
+                    <a href="#modal-link-${desk.getId()}" uk-toggle uk-icon="icon: link"></a>
+                    <div id="modal-uppriority-${desk.getId()}" uk-modal>
+                        <div class="uk-modal-dialog uk-modal-body">
+                            <form method="post" action="/desk/uppriority/" name="${desk.id}">
+                                <h2 class="uk-modal-title">Priority upper.</h2>
+                                <p> ${desk.name} Are you sure???</p>
+                                <p class="uk-text-right">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <input type="hidden" name="desk" value="${desk.id}">
+                                    <input type="hidden" name="project" value="${project.id}">
+                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                                    <button class="uk-button uk-button-primary" type="submit">Save</button>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal window for complete desk -->
+                    <div id="modal-complete-${desk.getId()}" uk-modal>
+                        <div class="uk-modal-dialog uk-modal-body">
+                            <form method="post" action="/desk/complete/" name="complete">
+                                <h2 class="uk-modal-title">Compete desk.</h2>
+                                <p>${desk.name} completed. Are you sure???</p>
+                                <p class="uk-text-right">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <input type="hidden" name="desk" value="${desk.id}">
+                                    <input type="hidden" name="project" value="${project.id}">
+                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                                    <button class="uk-button uk-button-primary" type="submit">Save</button>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="modal-link-${desk.getId()}" uk-modal>
+                        <div class="uk-modal-dialog uk-modal-body">
+                            <form method="post" action="/desk/uppriority/" name="upper">
+                                <h2 class="uk-modal-title">Priority upper.</h2>
+                                <label>Desk ID: ${desk.id}</label>
+                                <p class="uk-text-right">
+                                    <label>Name desk: ${desk.name}</label>
+                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
                     </#if>
+
+                    <!-- Modal window for up priority desk -->
+
+
+
                 </div>
                 ${desk.name}
             </div>
-
-            <div id="modal-uppriority" uk-modal>
-                <div class="uk-modal-dialog uk-modal-body">
-                    <form method="post" action="/desk/uppriority/" name="${desk.id}">
-                        <h2 class="uk-modal-title">Priority upper.</h2>
-                        <p> ${desk.name} Are you sure???</p>
-                        <p class="uk-text-right">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <input type="hidden" name="desk" value="${desk.id}">
-                            <input type="hidden" name="project" value="${project.id}">
-                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                            <button class="uk-button uk-button-primary" type="submit">Save</button>
-                        </p>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Modal window for complete desk -->
-            <div id="modal-complete" uk-modal>
-                <div class="uk-modal-dialog uk-modal-body">
-                    <form method="post" action="/desk/complete/" name="complete">
-                        <h2 class="uk-modal-title">Compete desk.</h2>
-                        <p>${desk.name} completed. Are you sure???</p>
-                        <p class="uk-text-right">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <input type="hidden" name="desk" value="${desk.id}">
-                            <input type="hidden" name="project" value="${project.id}">
-                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                            <button class="uk-button uk-button-primary" type="submit">Save</button>
-                        </p>
-                    </form>
-                </div>
-            </div>
-
-            <div id="modal-link" uk-modal>
-                <div class="uk-modal-dialog uk-modal-body">
-                    <form method="post" action="/desk/uppriority/" name="upper">
-                        <h2 class="uk-modal-title">Priority upper.</h2>
-                        <label>Desk ID: ${desk.id}</label>
-                        <p class="uk-text-right">
-                            <label>Name desk: ${desk.name}</label>
-                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                        </p>
-                    </form>
-                </div>
-            </div>
-
         </li>
+
             </#if>
+
         </#list>
     </ul>
 
