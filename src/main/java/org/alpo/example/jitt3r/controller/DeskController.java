@@ -37,6 +37,7 @@ public class DeskController {
         List<Desk> desks = deskRepo.findAllByProject(project);
         List<Note> notes = noteRepo.findAllByProject(project);
 
+        model.addAttribute("isDeskForm",true);
         model.addAttribute("notes", notes);
         model.addAttribute("desks",desks);
         model.addAttribute("project",project);
@@ -45,11 +46,13 @@ public class DeskController {
 
     @PostMapping("add")
     public String addDesk(@AuthenticationPrincipal User user,
-                          @RequestParam Project project,
+
                           @RequestParam String deskName,
+                          @RequestParam String radio,
+                            @RequestParam Project project,
                           Model model) {
 
-        Desk desk = new Desk(deskName,project);
+        Desk desk = new Desk(deskName,radio,project,false);
         deskRepo.save(desk);
 
         return deskService.getUrl(project.getId());
@@ -63,34 +66,4 @@ public class DeskController {
         return "deskedit";
     }
 
-    @PostMapping(value = "delete")
-    public String deskDelete(@RequestParam Desk desk,
-                             @RequestParam Project project,
-                             Model model) {
-        deskRepo.delete(desk);
-
-        return deskService.getUrl(project.getId());
-    }
-
-    @PostMapping(value = "uppriority")
-    public String deskUpper(@RequestParam Desk desk,
-                             @RequestParam Project project,
-                             Model model) {
-        desk.setImportant(true);
-
-        deskRepo.save(desk);
-
-        return deskService.getUrl(project.getId());
-    }
-
-    @PostMapping(value = "complete")
-    public String deskComplete(@RequestParam Desk desk,
-                            @RequestParam Project project,
-                            Model model) {
-        desk.setComplete(true);
-
-        deskRepo.save(desk);
-        System.out.println(desk);
-        return deskService.getUrl(project.getId());
-    }
 }

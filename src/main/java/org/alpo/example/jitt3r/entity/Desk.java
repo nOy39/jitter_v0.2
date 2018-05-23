@@ -8,22 +8,23 @@ public class Desk {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    private String classStyle;
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    private boolean isImportant;
     private boolean isComplete;
 
     public Desk() {
     }
 
-    public Desk(String name, Project project) {
+    public Desk(String name, String classStyle, Project project, boolean isComplete) {
         this.name = name;
+        this.classStyle = classStyle;
         this.project = project;
+        this.isComplete = isComplete;
     }
 
     public Long getId() {
@@ -32,6 +33,14 @@ public class Desk {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getClassStyle() {
+        return classStyle;
+    }
+
+    public void setClassStyle(String classStyle) {
+        this.classStyle = classStyle;
     }
 
     public String getName() {
@@ -50,14 +59,6 @@ public class Desk {
         this.project = project;
     }
 
-    public boolean isImportant() {
-        return isImportant;
-    }
-
-    public void setImportant(boolean important) {
-        isImportant = important;
-    }
-
     public boolean isComplete() {
         return isComplete;
     }
@@ -70,9 +71,9 @@ public class Desk {
     public String toString() {
         return "Desk{" +
                 "id=" + id +
+                ", classStyle='" + classStyle + '\'' +
                 ", name='" + name + '\'' +
                 ", project=" + project +
-                ", isImportant=" + isImportant +
                 ", isComplete=" + isComplete +
                 '}';
     }
