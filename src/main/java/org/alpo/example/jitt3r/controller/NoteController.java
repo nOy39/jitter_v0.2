@@ -1,5 +1,6 @@
 package org.alpo.example.jitt3r.controller;
 
+import org.alpo.example.jitt3r.entity.Desk;
 import org.alpo.example.jitt3r.entity.Note;
 import org.alpo.example.jitt3r.entity.User;
 import org.alpo.example.jitt3r.repos.MessageRepo;
@@ -30,10 +31,12 @@ public class NoteController {
     private String uploadPath;
 
 
-    @PostMapping(value = "addDesk")
+    @PostMapping(value = "add")
     public String add(
             @AuthenticationPrincipal User user,
-            @RequestParam String addNote, Map<String, Object> model) {
+            @RequestParam Desk desk,
+            @RequestParam String name,
+            Model model) {
 
         SimpleDateFormat sDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy, HH:mm");
 
@@ -43,9 +46,6 @@ public class NoteController {
 
         noteRepo.save(note);
 
-        Iterable<Note> notes = noteRepo.findAll();
-
-        model.put("messages", notes);
 
         return "redirect:/";
     }

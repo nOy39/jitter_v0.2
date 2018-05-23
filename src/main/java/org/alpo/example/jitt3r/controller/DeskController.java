@@ -1,6 +1,7 @@
 package org.alpo.example.jitt3r.controller;
 
 import org.alpo.example.jitt3r.entity.Desk;
+import org.alpo.example.jitt3r.entity.Note;
 import org.alpo.example.jitt3r.entity.Project;
 import org.alpo.example.jitt3r.entity.User;
 import org.alpo.example.jitt3r.repos.DeskRepo;
@@ -27,10 +28,16 @@ public class DeskController {
     @Autowired
     DeskService deskService;
 
+
+
     @GetMapping("{project}/list/")
     public String deskTemplateView(@PathVariable Project project,
                                    Model model) {
+
         List<Desk> desks = deskRepo.findAllByProject(project);
+        List<Note> notes = noteRepo.findAllByProject(project);
+
+        model.addAttribute("notes", notes);
         model.addAttribute("desks",desks);
         model.addAttribute("project",project);
         return "desk";

@@ -23,7 +23,7 @@
         <li uk-filter-control="[data-color='complete']"><a href="#">Complete</a></li>
     </ul>
 
-    <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m uk-text-center" uk-grid>
+    <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m" uk-grid>
 
         <#list desks as desk>
             <#if desk.complete>
@@ -33,7 +33,24 @@
                             <a href="#modal-trash-${desk.getId()}" uk-toggle uk-icon="icon: trash"></a>
                         </div>
                         <div>
-                            ${desk.name}
+                            <h4><span style="uk-text-lead" class="uk-text-center uk-position-small uk-position-top-left">${desk.name}</span></h4>
+                            <ul class="uk-list">
+                                <li>
+                                    <form method="post" action="/notes/add">
+                                        <div class="uk-margin">
+                                            <input class="uk-input" type="name" placeholder="Small">
+                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                            <input type="hidden" name="desk" value="${desk.id}">
+                                        </div>
+                                    </form>
+                                </li>
+                        <#list notes as note>
+                            <#if note.desk == desk>
+                                <li><a href="/notes/{note}"><span style="uk-text-left">${note.message?ifExists}</span></a></li>
+                            </#if>
+                        </#list>
+                            </ul>
+
                         </div>
                     </div>
                 </li>
@@ -65,6 +82,7 @@
                     <a href="#modal-uppriority-${desk.getId()}" name="${desk.id}" uk-toggle uk-icon="icon: star"></a>
                     <a href="#modal-complete-${desk.getId()}" uk-toggle uk-icon="icon: check"></a>
                     <a href="#modal-link-${desk.getId()}" uk-toggle uk-icon="icon: link"></a>
+
                     <div id="modal-uppriority-${desk.getId()}" uk-modal>
                         <div class="uk-modal-dialog uk-modal-body">
                             <form method="post" action="/desk/uppriority/" name="${desk.id}">
@@ -98,26 +116,27 @@
                         </div>
                     </div>
 
-                    <div id="modal-link-${desk.getId()}" uk-modal>
-                        <div class="uk-modal-dialog uk-modal-body">
-                            <form method="post" action="/desk/uppriority/" name="upper">
-                                <h2 class="uk-modal-title">Priority upper.</h2>
-                                <label>Desk ID: ${desk.id}</label>
-                                <p class="uk-text-right">
-                                    <label>Name desk: ${desk.name}</label>
-                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                                </p>
-                            </form>
-                        </div>
-                    </div>
                     </#if>
-
-                    <!-- Modal window for up priority desk -->
-
-
-
                 </div>
-                ${desk.name}
+                <div>
+                    <h4><span style="uk-text-lead" class="uk-text-center uk-position-small uk-position-top-left">${desk.name}</span></h4>
+                    <ul class="uk-list">
+                        <li>
+                            <form method="post" action="/notes/add">
+                                <div class="uk-margin">
+                                    <input class="uk-input" type="name" placeholder="Small">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <input type="hidden" name="desk" value="${desk.id}">
+                                </div>
+                            </form>
+                        </li>
+                        <#list notes as note>
+                            <#if note.desk == desk>
+                                <li><a href="/notes/{note}"><span style="uk-text-left">${note.message?ifExists}</span></a></li>
+                            </#if>
+                        </#list>
+                    </ul>
+                </div>
             </div>
         </li>
 
