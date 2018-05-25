@@ -28,6 +28,7 @@ public class User implements UserDetails {
     private String firstname;
     private String lastname;
     private String uniqID;
+    private String avatar;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -141,5 +142,13 @@ public class User implements UserDetails {
 
     public void setUniqID(String uniqID) {
         this.uniqID = uniqID;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

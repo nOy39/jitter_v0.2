@@ -14,7 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//TODO Задокументировать нужные методы, лишнее удалить
+//TODO Сделать удаление дески
 @Controller
 @RequestMapping(value = "desk")
 public class DeskController {

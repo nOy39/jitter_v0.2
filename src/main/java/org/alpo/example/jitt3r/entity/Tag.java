@@ -12,7 +12,13 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
+
     private String color;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

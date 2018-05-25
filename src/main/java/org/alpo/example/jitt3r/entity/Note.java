@@ -9,10 +9,12 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
     private String message;
     private boolean done;
     private String dateCreated;
     private String dateComplete;
+    private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -29,12 +31,28 @@ public class Note {
     public Note() {
     }
 
-    public Note(String message, String dateCreated, User author, Desk desk, Project project) {
-        this.message = message;
+    public Note(String name, String dateCreated, User author, Desk desk, Project project) {
+        this.name = name;
         this.dateCreated = dateCreated;
         this.author = author;
         this.desk = desk;
         this.project = project;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {
