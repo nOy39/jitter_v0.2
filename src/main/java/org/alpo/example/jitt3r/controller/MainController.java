@@ -137,4 +137,13 @@ public class MainController {
         }
         return "redirect:/";
     }
+
+    @GetMapping(value = "main")
+    public String mainPage(
+            @AuthenticationPrincipal User user,
+            Model mosel) {
+
+        return "rediz";
+    }
+
 }
