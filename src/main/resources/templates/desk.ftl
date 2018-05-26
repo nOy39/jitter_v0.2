@@ -43,8 +43,8 @@
                              <#list notes as note>
                                  <#if note.desk == desk>
                                      <li>
-                                         <a href="/notes/{note}">
-                                             <span style="uk-text-left">${note.message?ifExists}</span>
+                                         <a href="/notes/${note.id}">
+                                             <span style="uk-text-left">${note.name?ifExists}</span>
                                          </a>
                                      </li>
                                  </#if>
@@ -56,7 +56,7 @@
         </#list>
     </ul>
 </div>
-    <#--Модальное окно добавление доски-->
+<#--Модальное окно добавление доски-->
     <@m.page>
 
     </@m.page>

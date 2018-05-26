@@ -1,16 +1,11 @@
 package org.alpo.example.jitt3r.controller;
 
-import org.alpo.example.jitt3r.entity.Desk;
-import org.alpo.example.jitt3r.entity.Note;
-import org.alpo.example.jitt3r.entity.UploadFile;
-import org.alpo.example.jitt3r.entity.User;
+import org.alpo.example.jitt3r.entity.*;
+import org.alpo.example.jitt3r.repos.CommentRepo;
 import org.alpo.example.jitt3r.repos.NoteRepo;
 import org.alpo.example.jitt3r.repos.TagRepo;
 import org.alpo.example.jitt3r.repos.UploadFileRepo;
-import org.alpo.example.jitt3r.service.DeskService;
-import org.alpo.example.jitt3r.service.FileService;
-import org.alpo.example.jitt3r.service.NoteService;
-import org.alpo.example.jitt3r.service.ToolService;
+import org.alpo.example.jitt3r.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +34,9 @@ public class NoteController {
     private NoteService noteService;
 
     @Autowired
+    private CommentService commentService;
+
+    @Autowired
     private UploadFileRepo uploadFileRepo;
 
     @Autowired
@@ -46,6 +44,9 @@ public class NoteController {
 
     @Autowired
     private TagRepo tagRepo;
+
+    @Autowired
+    private CommentRepo commentRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -63,6 +64,7 @@ public class NoteController {
         model.addAttribute("image",uploadFileRepo.findAllByNote(note));
         model.addAttribute("note", note);
         model.addAttribute("tags",tagRepo.findAllByProject(note.getProject()));
+        model.addAttribute("comments",commentRepo.findAllByNote(note));
 
         return "note";
     }
@@ -122,6 +124,21 @@ public class NoteController {
         }
         return "redirect:/notes/"+note.getId();
 
+    }
+
+    @PostMapping(value = "comment")
+    public String addMessage(
+            @AuthenticationPrincipal User user,
+            @RequestParam String textarea,
+            @RequestParam Note note,
+            @RequestParam String commentId,
+            Model model) {
+
+        if (commentService.checkMessage(textarea,user,note,commentId)) {
+            return "redirect:/notes/"+note.getId();
+        }
+
+        return "redirect:/notes/"+note.getId();
     }
 
 

@@ -1,13 +1,16 @@
-<#import "common.ftl" as c>
+<#import "parts/common.ftl" as c>
 
 <@c.page>
-<div id="page">
+
     <h1>Error</h1>
-
+    ${error?ifExists}
+    ${status?ifExists}
     <p>Sorry the operation you tried to do is not supported</p>
+    <span>Sorry the page url <a href="#">${url?ifExists}</a> </span>
+    <p>Error message:</p><p>${exception.message?ifExists}</p>
 
-    <p>Error message:</p>
 
-    <p>${status} ${error}</p>
-</div>
+
+
+
 </@c.page>
