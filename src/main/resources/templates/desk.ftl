@@ -5,15 +5,17 @@
 <#--Название проекта-->
 <div class="uk-text-uppercase uk-text-large uk-text-primary uk-text-center" xmlns="http://www.w3.org/1999/html">
     <span>${project.getPrj_name()}</span>
-</div>
+
 <#--отображение досок -->
 <div uk-filter="target: .js-filter">
 <#--Сортировка-->
     <ul class="uk-subnav uk-subnav-pill">
+        <li><a href="#modal-${project.id}" uk-toggle>addnewdesk</a> </li>
         <li class="uk-active" uk-filter-control><a href="#">All</a></li>
         <li uk-filter-control="[data-color='primary']"><a href="#">primary</a></li>
         <li uk-filter-control="[data-color='secondary']"><a href="#">secondary</a></li>
         <li uk-filter-control="[data-color='default']"><a href="#">default</a></li>
+
     </ul>
 <#--Отображение отсортированных значений-->
     <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m" uk-grid>
@@ -56,7 +58,40 @@
         </#list>
     </ul>
 </div>
+<div>
+
 <#--Модальное окно добавление доски-->
+
+    <div id="modal-${project.id}" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <form name="add" method="post" action="/desk/add">
+            <h2 class="uk-modal-title">Adding new desk</h2>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="form-stacked-text">Deskname</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="form-stacked-text" type="text" name="deskName" placeholder="Enter deskname...">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="form-stacked-select">Select style</label>
+                    <div class="uk-form-controls">
+                        <select class="uk-select" id="form-stacked-select" name="style">
+                            <option>primary</option>
+                            <option>secondary</option>
+                            <option>default</option>
+                        </select>
+                    </div>
+                </div>
+            <p class="uk-text-right">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="project" value="${project.id}">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                <button class="uk-button uk-button-primary" type="submit">Save</button>
+            </p>
+            </form>
+        </div>
+    </div>
+
     <@m.page>
 
     </@m.page>

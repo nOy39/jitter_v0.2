@@ -10,7 +10,6 @@ import org.alpo.example.jitt3r.repos.NoteRepo;
 import org.alpo.example.jitt3r.service.FileService;
 import org.alpo.example.jitt3r.service.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by @author OGI aka nOy39
@@ -55,8 +51,6 @@ public class MainController {
     public String welcome(@AuthenticationPrincipal User user,
                           Model model) {
 
-        model.addAttribute("comments",commentRepo.findAll());
-        model.addAttribute("img",uploadFileRepo.findAll());
         model.addAttribute("user",user);
 
         return "main";
@@ -120,22 +114,31 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping(value = "chat")
+    public String charPage(@AuthenticationPrincipal User user,
+                           Map<String, Object> model) {
+        model.put("comment",commentRepo.findAllByMessageIsNotNullOrderById());
+        model.put("replyes",commentRepo.findAllByReplyIsNotNull());
 
+        return "chatmessage";
+    }
 
     @PostMapping(value = "comment")
     public String addMessage(
             @AuthenticationPrincipal User user,
-            @RequestParam String textarea, Model model) {
+            @RequestParam String comments,
+            @RequestParam Comment commentReply,
+            Model model) {
 
-        String text = textarea;
+        String text = comments;
         Comment comment = new Comment();
 
         if (!text.equals("")) {
-            comment.setMessage(textarea);
-            comment.setUser(user);
+            comment.setMessage(comments);
+            comment.setAuthor(user);
             commentRepo.save(comment);
         }
-        return "redirect:/";
+        return "redirect:/chat";
     }
 
     @GetMapping(value = "main")

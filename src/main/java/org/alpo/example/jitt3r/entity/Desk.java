@@ -15,16 +15,16 @@ public class Desk {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    private boolean isComplete;
+    private boolean isPublic;
 
     public Desk() {
     }
 
-    public Desk(String name, String classStyle, Project project, boolean isComplete) {
+    public Desk(String name, String classStyle, Project project, boolean isPublic) {
         this.name = name;
         this.classStyle = classStyle;
         this.project = project;
-        this.isComplete = isComplete;
+        this.isPublic = isPublic;
     }
 
     public Long getId() {
@@ -59,12 +59,12 @@ public class Desk {
         this.project = project;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+    public boolean isPublic() {
+        return isPublic;
     }
 
-    public void setComplete(boolean complete) {
-        isComplete = complete;
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Desk {
                 ", classStyle='" + classStyle + '\'' +
                 ", name='" + name + '\'' +
                 ", project=" + project +
-                ", isComplete=" + isComplete +
+                ", isPubl=" + isPublic +
                 '}';
     }
 }

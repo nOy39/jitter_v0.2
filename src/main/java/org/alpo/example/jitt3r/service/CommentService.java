@@ -20,11 +20,7 @@ public class CommentService{
         Comment comment = new Comment();
         if (!textarea.equals("")) {
             comment.setMessage(textarea);
-            comment.setNote(note);
-            comment.setUser(user);
-            if (!commentId.equals("no reply")) {
-                comment.setReplyId(Long.parseLong(commentId));
-            }
+            comment.setAuthor(user);
             commentRepo.save(comment);
             checkResult = true;
         }

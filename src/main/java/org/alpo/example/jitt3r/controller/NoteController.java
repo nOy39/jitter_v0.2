@@ -59,12 +59,13 @@ public class NoteController {
     @GetMapping(value = "{note}")
     public String notesView(
             @PathVariable Note note,
-            Model model) {
+            Map<String, Object> model) {
 
-        model.addAttribute("image",uploadFileRepo.findAllByNote(note));
-        model.addAttribute("note", note);
-        model.addAttribute("tags",tagRepo.findAllByProject(note.getProject()));
-        model.addAttribute("comments",commentRepo.findAllByNote(note));
+        model.put("image",uploadFileRepo.findAllByNote(note));
+        model.put("note", note);
+        model.put("tags",tagRepo.findAllByProject(note.getProject()));
+        model.put("comment",commentRepo.findAllByMessageIsNotNullOrderById());
+        model.put("replyes",commentRepo.findAllByReplyIsNotNull());
 
         return "note";
     }

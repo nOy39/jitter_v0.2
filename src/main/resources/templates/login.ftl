@@ -17,7 +17,7 @@
                         <input type="password" name="password" class="form-control" placeholder="Password"> </div>
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
                     <button type="submit" class="btn col-3 md-3 btn-outline-primary col-sm-3 col-md-3 col-lg-3 col-xl-3" style="background-image: url('../static/img/25p.png'); position:relative;top:-5px" id="send">Send</button>
-                    <span style="float: right"><a href="/registration">Sign up</a>, new user.</span>
+                    <span style="float: right"><a href="/registration">Sign up</a>, new author.</span>
                 </form>
             </div>
         </div>

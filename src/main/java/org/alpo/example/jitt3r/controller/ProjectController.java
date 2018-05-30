@@ -2,6 +2,7 @@ package org.alpo.example.jitt3r.controller;
 
 import org.alpo.example.jitt3r.entity.Project;
 import org.alpo.example.jitt3r.entity.User;
+import org.alpo.example.jitt3r.repos.ProjectRolesRepo;
 import org.alpo.example.jitt3r.repos.ProjectsRepo;
 import org.alpo.example.jitt3r.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "projects")
@@ -23,12 +25,18 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
+    @Autowired
+    ProjectRolesRepo projectRolesRepo;
+
     @GetMapping
-    public String projectList(@AuthenticationPrincipal User user, Model model) {
+    public String projectList(@AuthenticationPrincipal User user,
+                              Map<String, Object> model) {
 
-        model.addAttribute("projects", projectsRepo.findAllByAuthor(user));
+        model.put("projects", projectsRepo.findAllByAuthor(user));
 
-        model.addAttribute("publ_projects",projectsRepo.findAllByisPublic(true));
+        model.put("publProjects",projectsRepo.findAllByPubl(true));
+
+        model.put("shareProject", projectRolesRepo.findAllByAuthor(user));
         return "projects";
     }
 
@@ -74,7 +82,7 @@ public class ProjectController {
                                   @PathVariable Project project,
                                   Model model) {
         model.addAttribute("project",project);
-        return "setting";
+        return "chatmessage";
     }
 
 }

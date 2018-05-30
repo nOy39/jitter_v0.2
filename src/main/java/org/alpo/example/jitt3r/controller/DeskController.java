@@ -49,11 +49,14 @@ public class DeskController {
     public String addDesk(@AuthenticationPrincipal User user,
 
                           @RequestParam String deskName,
-                          @RequestParam String radio,
+                            @RequestParam String style,
                             @RequestParam Project project,
                           Model model) {
 
-        Desk desk = new Desk(deskName,radio,project,false);
+        Desk desk = new Desk();
+        desk.setName(deskName);
+        desk.setClassStyle(style);
+        desk.setProject(project);
         deskRepo.save(desk);
 
         return deskService.getUrl(project.getId());
@@ -66,5 +69,6 @@ public class DeskController {
                            Model model) {
         return "deskedit";
     }
+
 
 }

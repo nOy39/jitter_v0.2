@@ -8,21 +8,23 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    private long replyId;
     private String message;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "desk_id")
-    private Desk desk;
+    @JoinColumn(name = "comment_id")
+    private Comment reply;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "author_id")
+    private User author;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "note_id")
     private Note note;
+
+    private int likes;
+
+    private int dislikes;
 
     public Comment() {
     }
@@ -43,20 +45,20 @@ public class Comment {
         this.message = message;
     }
 
-    public Desk getDesk() {
-        return desk;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setDesk(Desk desk) {
-        this.desk = desk;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
-    public User getUser() {
-        return user;
+    public Comment getReply() {
+        return reply;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setReply(Comment reply) {
+        this.reply = reply;
     }
 
     public Note getNote() {
@@ -67,11 +69,4 @@ public class Comment {
         this.note = note;
     }
 
-    public long getReplyId() {
-        return replyId;
-    }
-
-    public void setReplyId(long replyId) {
-        this.replyId = replyId;
-    }
 }

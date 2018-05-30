@@ -1,6 +1,7 @@
 package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Project {
@@ -14,7 +15,7 @@ public class Project {
     private String uniqid;
 
     private boolean isactive;
-    private boolean isPublic;
+    private boolean publ;
 
     private String createdDate;
     private String deadlineDate;
@@ -23,6 +24,10 @@ public class Project {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "share_id")
+    private Set<ProjectRole> share;
 
     public Project() {
     }
@@ -33,14 +38,14 @@ public class Project {
         this.prj_name = prj_name;
         this.uniqid = uniqid;
         this.author = author;
-        this.isPublic = is_public;
+        this.publ = is_public;
         this.createdDate = createdDate;
     }
 
     public Project(String prj_name,
                    String description,
                    String uniqid,
-                   boolean isPublic,
+                   boolean publ,
                    String createdDate,
                    String deadlineDate,
                    User author) {
@@ -48,7 +53,7 @@ public class Project {
         this.prj_name = prj_name;
         this.description = description;
         this.uniqid = uniqid;
-        this.isPublic = isPublic;
+        this.publ = publ;
         this.createdDate = createdDate;
         this.deadlineDate = deadlineDate;
         this.author = author;
@@ -86,12 +91,12 @@ public class Project {
         this.uniqid = uniqid;
     }
 
-    public boolean isPublic() {
-        return isPublic;
+    public boolean isPubl() {
+        return publ;
     }
 
-    public void setPublic(boolean aPublic) {
-        this.isPublic = aPublic;
+    public void setPubl(boolean publ) {
+        this.publ = publ;
     }
 
     public String getDescription() {
@@ -126,6 +131,14 @@ public class Project {
         this.deadlineDate = deadlineDate;
     }
 
+    public Set<ProjectRole> getShare() {
+        return share;
+    }
+
+    public void setShare(Set<ProjectRole> share) {
+        this.share = share;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
@@ -134,7 +147,7 @@ public class Project {
                 ", description='" + description + '\'' +
                 ", uniqid='" + uniqid + '\'' +
                 ", isactive=" + isactive +
-                ", isPublic=" + isPublic +
+                ", publ=" + publ +
                 ", createdDate='" + createdDate + '\'' +
                 ", deadlineDate='" + deadlineDate + '\'' +
                 ", author=" + author +
