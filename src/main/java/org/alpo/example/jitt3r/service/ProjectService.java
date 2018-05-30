@@ -43,7 +43,6 @@ public class ProjectService {
         } else {
             project.setDescription(description);
         }
-        project.setDeadlineDate(deadline);
         project.setAuthor(user);
         System.out.println(project);
         projectsRepo.save(project);

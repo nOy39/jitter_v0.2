@@ -18,8 +18,6 @@ public class Project {
     private boolean publ;
 
     private String createdDate;
-    private String deadlineDate;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -42,22 +40,6 @@ public class Project {
         this.createdDate = createdDate;
     }
 
-    public Project(String prj_name,
-                   String description,
-                   String uniqid,
-                   boolean publ,
-                   String createdDate,
-                   String deadlineDate,
-                   User author) {
-
-        this.prj_name = prj_name;
-        this.description = description;
-        this.uniqid = uniqid;
-        this.publ = publ;
-        this.createdDate = createdDate;
-        this.deadlineDate = deadlineDate;
-        this.author = author;
-    }
 
     public Long getId() {
         return id;
@@ -123,14 +105,6 @@ public class Project {
         this.createdDate = createdDate;
     }
 
-    public String getDeadlineDate() {
-        return deadlineDate;
-    }
-
-    public void setDeadlineDate(String deadlineDate) {
-        this.deadlineDate = deadlineDate;
-    }
-
     public Set<ProjectRole> getShare() {
         return share;
     }
@@ -149,7 +123,6 @@ public class Project {
                 ", isactive=" + isactive +
                 ", publ=" + publ +
                 ", createdDate='" + createdDate + '\'' +
-                ", deadlineDate='" + deadlineDate + '\'' +
                 ", author=" + author +
                 '}';
     }

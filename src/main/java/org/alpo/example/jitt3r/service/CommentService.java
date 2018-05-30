@@ -7,23 +7,54 @@ import org.alpo.example.jitt3r.repos.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class CommentService{
 
     @Autowired
     private CommentRepo commentRepo;
 
-    public boolean checkMessage(String textarea, User user, Note note, String commentId) {
+    public boolean checkMessage(String message, User user, Note note, Comment commentId) {
 
         boolean checkResult = false;
 
-        Comment comment = new Comment();
-        if (!textarea.equals("")) {
-            comment.setMessage(textarea);
-            comment.setAuthor(user);
-            commentRepo.save(comment);
+        Comment reply = new Comment();
+        if (!message.equals("")) {
+            reply.setMessage(message);
+            reply.setAuthor(user);
+            reply.setReply(commentId);
+            reply.setNote(note);
+            commentRepo.save(reply);
             checkResult = true;
         }
         return checkResult;
+    }
+
+    public boolean addNewComment(String comment, User author, Note currentNote) {
+
+        Comment newComment = new Comment();
+        newComment.setAuthor(author);
+        newComment.setMessage(comment);
+        newComment.setNote(currentNote);
+        newComment.setDate(new Date());
+        newComment.setLikes(0);
+        newComment.setDislikes(0);
+        commentRepo.save(newComment);
+
+        return true;
+    }
+
+    public void addReply(String comment, User author, Note note, Comment commentId) {
+
+        Comment newComment = new Comment();
+        newComment.setAuthor(author);
+        newComment.setMessage(comment);
+        newComment.setNote(note);
+        newComment.setReply(commentId);
+        newComment.setDate(new Date());
+        newComment.setLikes(0);
+        newComment.setDislikes(0);
+        commentRepo.save(newComment);
     }
 }

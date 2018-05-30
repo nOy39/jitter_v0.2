@@ -43,10 +43,10 @@
 <#--${msg.message}-->
 <#--<ul>-->
 <#--<li>-->
-<#--<#list replyes as reply>-->
+<#--<#list replies as reply>-->
 <#--<#if reply.reply.toString() == msg.toString()>-->
 <#--${reply.message}-->
-<#--<#list replyes as sub_reply>-->
+<#--<#list replies as sub_reply>-->
 <#--<#if sub_reply.reply.toString() == reply.toString()>-->
 <#--<ul>-->
 <#--<li>-->

@@ -66,7 +66,6 @@ public class ProjectController {
                     projectService.getUID(),
                     isPublic,
                     projectService.getToday(),
-                    dateForm,
                     user);
 
             projectsRepo.save(project);

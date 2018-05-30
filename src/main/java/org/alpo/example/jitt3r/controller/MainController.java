@@ -106,7 +106,7 @@ public class MainController {
 
         if (file!=null && !file.getOriginalFilename().isEmpty()) {
 
-            uploadFileRepo.save(fileService.upload(file));
+            uploadFileRepo.save(fileService.upload(file,"main"));
         }
 
 

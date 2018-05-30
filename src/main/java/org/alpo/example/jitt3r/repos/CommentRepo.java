@@ -12,4 +12,7 @@ import java.util.Set;
 public interface CommentRepo extends JpaRepository <Comment, Long> {
     List<Comment> findAllByMessageIsNotNullOrderById();
     List<Comment> findAllByReplyIsNotNull();
+    List<Comment> findAllByNoteOrderByDate(Note note);
+    List<Comment> findAllByNoteAndReplyIsNotNull(Note note);
+    long countAllByNote(Note note);
 }

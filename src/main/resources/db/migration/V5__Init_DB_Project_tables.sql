@@ -1,7 +1,6 @@
 create table project (
   id int8 not null,
   created_date varchar(255),
-  deadline_date varchar(255),
   description varchar(255),
   isactive boolean not null,
   prj_name varchar(255),

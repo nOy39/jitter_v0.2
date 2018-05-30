@@ -2,77 +2,225 @@
 <#import "parts/bigparalax.ftl" as p1>
 <@c.page>
 
-<div class="uk-grid-match uk-grid-small" uk-grid>
+<div class="uk-flex">
+    <div class="uk-width-2-3@l uk-width-2-3@l uk-card uk-card-default uk-card-body uk-card-small">
+    <#--TODO Оставляю такой вид LOCKED!!!-->
+        <article class="uk-article">
 
+            <h1 class="uk-article-title"><a class="uk-link-reset" href="">${note.name}</a></h1>
 
-    <div class="uk-width-2-3@m uk-width-2-3@l">
-        <div class="uk-card uk-card-default uk-card-body">
-        </div>
+            <p class="uk-article-meta">Written by ${note.author.username} on ${note.created}. Posted in <a class="uk-text-primary" href="#">${note.desk.name}</a></p>
+
+            <#if note.description??>
+            <p class= "uk-text-large">${note.description}</p>
+            <p class="uk-article-meta"><a class="uk-text-primary" href="#modal-description" uk-toggle>Edit</a> description.</p>
+            <#else>
+            <p class= "uk-text-lead uk-text-muted">Description Empty</p>
+            <p class="uk-article-meta "><a class="uk-text-primary" href="#modal-description" uk-toggle>Add</a> description.</p>
+            </#if>
+            <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                <div>
+                    <a href="#target" class="uk-button uk-button-text" uk-scroll>
+                        ${count} Comments</a>
+                    <a class="uk-button uk-button-text" href="#">Settings</a>
+                </div>
+                <form method="post" enctype="multipart/form-data" action="/notes/upload">
+
+                    <div class="uk-margin">
+                        <span class="uk-text-middle">Here is a text</span>
+                        <div uk-form-custom>
+                            <input type="file">
+                            <span class="uk-link">upload</span>
+                        </div>
+                    </div>
+
+                    <div class="uk-margin" uk-margin>
+                        <div uk-form-custom="target: true">
+                            <input type="file" name="file" id="customFile">
+                            <input class="uk-input uk-form-width-medium" type="text" placeholder="Select file" disabled>
+                            <input type="hidden" name="note" value="${note.id}">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                        </div>
+                        <button class="uk-button uk-button-default">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </article>
     </div>
-    <div class="uk-width-1-3@m uk-width-1-3@l">
-        <div class="uk-card uk-card-default uk-card-body">
-        </div>
-    </div>
-    <div class="uk-width-2-3@m uk-width-2-3@l">
-        <div class="uk-card uk-card-default uk-card-body">
-        </div>
-    </div>
-    <div class="uk-width-1-1@m uk-width-1-1@l">
-        <div class="uk-card uk-card-default uk-card-body">
-        </div>
-    </div>
-<#--Коментарии-->
-    <div class="uk-width-1-1@m uk-width-1-1@l">
-        <div class="uk-card uk-card-default uk-card-body">
-            <ul class="uk-comment-list">
-                <#list comment as msg>
-                    <#if !msg.reply??>
-                        <li>
-                            <@message msg/>
-                            <@treeView msg replyes/>
-                        </li>
-                    </#if>
+<#--TODO: Сделать норм контейнер для списка History-->
+    <div class="uk-width-1-3@l uk-width-1-3@l uk-card uk-card-default uk-card-body uk-card-small uk-margin-left">
+
+        <ul class="uk-list uk-list-divider uk-alert-success" uk-alert>
+                <#list histories as history>
+                    <li>
+                        <span class="uk-label">${history.author.username}</span>
+                        ${history.message}
+                        <span class="uk-label">${history.note.name}</span>
+                        at
+                        <i>${history.created}</i>
+                    </li>
                 </#list>
-            </ul>
-        </div>
+
+        </ul>
+
+
     </div>
 
 </div>
+<div class="uk-grid-match uk-grid-small" uk-grid>
 
-    <#macro message msg>
-    <article class="uk-comment <#if msg.reply??>uk-comment-primary</#if>">
-        <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
-            <div class="uk-grid-medium uk-flex-middle" uk-grid>
-                <div class="uk-width-auto">
-                    <img class="uk-comment-avatar" src="/img/${msg.author.avatar}" width="80" height="80" alt="">
-                </div>
-                <div class="uk-width-expand">
-                    <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">${msg.author.username}</a></h4>
-                    <#--<p class="uk-comment-meta uk-margin-remove-top"><a class="uk-link-reset" href="#">12 days ago</a></p>-->
-                </div>
-            </div>
-            <div class="uk-position-top-right uk-position-small uk-hidden-hover"><a class="uk-link-muted" href="#">Reply</a></div>
-        </header>
-        <div class="uk-comment-body">
-            <#if msg.reply??>
-                <i><span class="uk-label">${msg.author.username} answer ${msg.reply.author.username}</span></i>
-                <p>${msg.message}</p>
-                <#else>
-                <p>${msg.message}</p>
-            </#if>
+    <div class="uk-width-2-3@m uk-width-2-3@l">
+        <div class="uk-card uk-card-default uk-card-body">
         </div>
-    </article>
-    </#macro>
+    </div>
+
+    <div class="uk-width-1-1@m uk-width-1-1@l">
+        <div class="uk-card uk-card-default uk-card-body">
+        <#--Коментарии-->
+        </div>
+    </div>
+
+
+    <div class="uk-width-1-1@m uk-width-1-1@l" id="target">
+        <div class="uk-card uk-card-default uk-card-body">
+            <form method="post" action="/notes/comment">
+                <div class="uk-overflow-auto" id="my-id">
+                    <div class="uk-margin" uk-margin>
+                        <input class="uk-input uk-form-blank uk-width-4-5" type="text" placeholder="" name="comment">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <input type="hidden" name="note" value="${note.id}">
+                        <input type="hidden" name="commentId" value="0">
+                        <button class="uk-button uk-button-default" type="submit">Send</button>
+                    </div>
+                </div>
+            </form>
+            <div class="uk-overflow-auto" id="my-id">
+                <table class="uk-table uk-table-hover uk-table-middle uk-table-divider" beforescroll>
+                    <thead>
+                    <tr>
+                        <th class="uk-table-shrink">Author</th>
+                        <th class="uk-table-expand uk-text-center">Message</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                <#list comment as msg>
+                    <#if !msg.reply??>
+                        <@message msg/>
+                        <@treeView msg replies/>
+                    </#if>
+                </#list>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <a href="#" uk-totop uk-scroll></a>
+</div>
+<#-->-----------------------------------------------------------------------------------<-->
+<#-->----------------------------------Модальные окна-----------------------------------<-->
+<#-->-----------------------------------------------------------------------------------<-->
+
+<#-->Добавление описания к ноте<-->
+<div id="modal-description" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <form method="post" action="/notes/description">
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title">Description note</h2>
+            </div>
+            <div class="uk-modal-body">
+                <textarea class="uk-textarea" rows="8" name="description" placeholder="${note.description?ifExists}"></textarea>
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="note" value="${note.id}">
+            </div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                <button class="uk-button uk-button-primary" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<#-->Коментарии<-->
+<div id="modal-coment" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <form method="post" action="/notes/reply">
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title">Comment note</h2>
+            </div>
+            <div class="uk-modal-body">
+                <textarea class="uk-textarea" rows="8" name="message" placeholder=""></textarea>
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="note" value="${note.id}">
+            </div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                <button class="uk-button uk-button-primary" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+<#-->-----------------------------------------------------------------------------------<-->
+<#-->------------------------------------ Макросы---------------------------------------<-->
+<#-->-----------------------------------------------------------------------------------<-->
+
+<#-->Макрос рекурсии<-->
     <#macro treeView msg listReply>
+    <div id="modal-reply-${msg.id}" uk-modal>
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <form method="post" action="/notes/comment">
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">Reply to ${msg.author.username}</h2>
+                </div>
+                <div class="uk-modal-body">
+                    <textarea class="uk-textarea" rows="8" name="comment" placeholder=""></textarea>
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="hidden" name="note" value="${note.id}">
+                    <input type="hidden" name="commentId" value="${msg.id}">
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
         <#list listReply as reply>
             <#if reply.reply.toString() == msg.toString()>
-        <ul>
-            <li>
                 <@message reply/>
-                    <@treeView reply replyes/>
-            </li>
-        </ul>
+                <@treeView reply replies/>
             </#if>
         </#list>
     </#macro>
+
+<#-->Макрос построения таблицы сообщений<-->
+    <#macro message msg>
+        <tr>
+            <td>
+                <p class="uk-text-center">${msg.author.username}</p>
+                <img class="uk-preserve-width uk-border-circle" src="/img/avatars/${msg.author.avatar}" width="60" alt="">
+            </td>
+            <td class="uk-table-link">
+                <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                    <li><a href="#">12 days ago</a></li>
+                    <li><a href="#modal-reply-${msg.id}" uk-toggle>Reply</a></li>
+                </ul>
+                <#if msg.reply??>
+                    <p class="uk-article-meta">
+                        <span class="uk-label">${msg.reply.author.username} write:</span>
+                        <i>${msg.reply.message}</i>
+                    </p>
+
+                    <p class="uk-text-large uk-margin-small">${msg.message}</p>
+
+
+                <#else>
+                <p class="uk-text-large uk-margin-small">${msg.message}</p>
+                </#if>
+
+            </td>
+        </tr>
+    </#macro>
+<a href="" uk-totop></a>
 </@c.page>

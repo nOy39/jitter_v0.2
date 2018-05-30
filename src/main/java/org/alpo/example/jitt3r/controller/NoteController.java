@@ -1,10 +1,7 @@
 package org.alpo.example.jitt3r.controller;
 
 import org.alpo.example.jitt3r.entity.*;
-import org.alpo.example.jitt3r.repos.CommentRepo;
-import org.alpo.example.jitt3r.repos.NoteRepo;
-import org.alpo.example.jitt3r.repos.TagRepo;
-import org.alpo.example.jitt3r.repos.UploadFileRepo;
+import org.alpo.example.jitt3r.repos.*;
 import org.alpo.example.jitt3r.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -37,6 +35,9 @@ public class NoteController {
     private CommentService commentService;
 
     @Autowired
+    private HistoryService historyService;
+
+    @Autowired
     private UploadFileRepo uploadFileRepo;
 
     @Autowired
@@ -47,6 +48,9 @@ public class NoteController {
 
     @Autowired
     private CommentRepo commentRepo;
+
+    @Autowired
+    private HistoryRepo historyRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -61,11 +65,13 @@ public class NoteController {
             @PathVariable Note note,
             Map<String, Object> model) {
 
+        model.put("count",commentRepo.countAllByNote(note));
+        model.put("histories",historyRepo.findAllByNoteOrderById(note));
         model.put("image",uploadFileRepo.findAllByNote(note));
         model.put("note", note);
         model.put("tags",tagRepo.findAllByProject(note.getProject()));
-        model.put("comment",commentRepo.findAllByMessageIsNotNullOrderById());
-        model.put("replyes",commentRepo.findAllByReplyIsNotNull());
+        model.put("comment",commentRepo.findAllByNoteOrderByDate(note));
+        model.put("replies",commentRepo.findAllByNoteAndReplyIsNotNull(note));
 
         return "note";
     }
@@ -94,49 +100,100 @@ public class NoteController {
             @RequestParam String noteName,
             Model model) {
 
-
+        History history;
         if (!noteName.equals("") || !StringUtils.isEmpty(noteName)) {
-            Note note = new Note(noteName, toolService.getToday(), user, desk, desk.getProject());
+            Note note = new Note(noteName, new Date(), user, desk, desk.getProject());
             noteRepo.save(note);
+            historyService.saveCreatedNote(desk, note, user);
         }
         return deskService.getUrl(desk.getProject().getId());
     }
 
-    @PostMapping(value = "{note}")
+    /**
+     * Добавляем описание к ноте
+     * @param user
+     * @param note
+     * @param description
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "description")
+    public String notesDescription(
+            @AuthenticationPrincipal User user,
+            @RequestParam Note note,
+            @RequestParam String description,
+            Map<String, Object> model) {
+        if (!description.equals("")) {
+            note.setDescription(description);
+            noteRepo.save(note);
+            historyService.addDescriptionNote(note,user);
+            }
+        return "redirect:/notes/"+note.getId();
+    }
+
+    /**
+     * Добавляем описание к ноте
+     * @param user
+     * @param note
+     * @param model
+     * @param file
+     * @return
+     */
+    @PostMapping(value = "upload")
     public String notesAddBody(
             @AuthenticationPrincipal User user,
-            @PathVariable Note note,
-            @RequestParam String description,
+            @RequestParam Note note,
             Map<String, Object> model,
             @RequestParam("file") MultipartFile file) {
 
         UploadFile uploadFile;
 
         if (fileService.fileExists(file)) {
-            uploadFile = fileService.upload(file);
+            uploadFile = fileService.upload(file,"notes");
             uploadFile.setOriginalName(file.getOriginalFilename());
             uploadFile.setNote(note);
             uploadFileRepo.save(uploadFile);
+
+            historyService.uploadFile(uploadFile.getOriginalName(),note,user);
         }
-        String tempDescription = note.getDescription();
-        if (!description.equals("") && !description.equals(tempDescription)) {
-            note.setDescription(description);
-            noteRepo.save(note);
-        }
+
         return "redirect:/notes/"+note.getId();
 
+    }
+
+
+    @PostMapping(value = "reply")
+    public String replyMessage(
+            @AuthenticationPrincipal User user,
+            @RequestParam String message,
+            @RequestParam Note note,
+            @RequestParam Comment commentId,
+            Model model) {
+
+        if (commentService.checkMessage(message,user,note,commentId)) {
+
+            historyService.replyToComment(note,user,commentId);
+            return "redirect:/notes/"+note.getId();
+        }
+
+        return "redirect:/notes/"+note.getId();
     }
 
     @PostMapping(value = "comment")
     public String addMessage(
             @AuthenticationPrincipal User user,
-            @RequestParam String textarea,
+            @RequestParam String comment,
             @RequestParam Note note,
-            @RequestParam String commentId,
+            @RequestParam Comment commentId,
             Model model) {
 
-        if (commentService.checkMessage(textarea,user,note,commentId)) {
-            return "redirect:/notes/"+note.getId();
+        if (commentId == null && !comment.equals("")){
+            if(commentService.addNewComment(comment, user, note)) {
+                historyService.newCommentSave(user,note);
+            }
+        } else if (!comment.equals("")){
+            commentService.addReply(comment, user, note, commentId);
+            historyService.replyToComment(note,user,commentId);
         }
 
         return "redirect:/notes/"+note.getId();

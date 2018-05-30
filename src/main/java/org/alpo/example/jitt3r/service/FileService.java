@@ -19,10 +19,11 @@ public class FileService {
         return (file!=null && !file.getOriginalFilename().isEmpty());
     }
 
-    public UploadFile upload(MultipartFile file) {
+    public UploadFile upload(MultipartFile file, String path) {
         UploadFile uploadFile = new UploadFile();
 
-            File uploadDir = new File(uploadPath);
+            String uploadDirPath = uploadPath+path;
+            File uploadDir = new File(uploadDirPath);
 
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
@@ -31,7 +32,7 @@ public class FileService {
             String resultFilename = uuid+"."+file.getOriginalFilename();
 
             try {
-                file.transferTo(new File(uploadPath+"/"+resultFilename));
+                file.transferTo(new File(uploadDirPath+"/"+resultFilename));
             } catch (IOException e) {
                 e.printStackTrace();
             }

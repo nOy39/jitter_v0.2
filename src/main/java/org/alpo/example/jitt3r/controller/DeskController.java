@@ -1,10 +1,8 @@
 package org.alpo.example.jitt3r.controller;
 
-import org.alpo.example.jitt3r.entity.Desk;
-import org.alpo.example.jitt3r.entity.Note;
-import org.alpo.example.jitt3r.entity.Project;
-import org.alpo.example.jitt3r.entity.User;
+import org.alpo.example.jitt3r.entity.*;
 import org.alpo.example.jitt3r.repos.DeskRepo;
+import org.alpo.example.jitt3r.repos.HistoryRepo;
 import org.alpo.example.jitt3r.repos.NoteRepo;
 import org.alpo.example.jitt3r.service.DeskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 //TODO Задокументировать нужные методы, лишнее удалить
 //TODO Сделать удаление дески
@@ -29,6 +28,8 @@ public class DeskController {
     @Autowired
     DeskService deskService;
 
+    @Autowired
+    HistoryRepo historyRepo;
 
 
     @GetMapping("{project}/list/")
@@ -58,6 +59,10 @@ public class DeskController {
         desk.setClassStyle(style);
         desk.setProject(project);
         deskRepo.save(desk);
+
+        History history = new History("create desk",new Date(),user);
+        history.setDesk(desk);
+        history.setProject(project);
 
         return deskService.getUrl(project.getId());
 
