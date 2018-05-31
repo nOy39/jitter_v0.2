@@ -7,6 +7,7 @@ import org.alpo.example.jitt3r.repos.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -37,7 +38,7 @@ public class CommentService{
         newComment.setAuthor(author);
         newComment.setMessage(comment);
         newComment.setNote(currentNote);
-        newComment.setDate(new Date());
+        newComment.setDate(LocalDate.now());
         newComment.setLikes(0);
         newComment.setDislikes(0);
         commentRepo.save(newComment);
@@ -52,7 +53,7 @@ public class CommentService{
         newComment.setMessage(comment);
         newComment.setNote(note);
         newComment.setReply(commentId);
-        newComment.setDate(new Date());
+        newComment.setDate(LocalDate.now());
         newComment.setLikes(0);
         newComment.setDislikes(0);
         commentRepo.save(newComment);

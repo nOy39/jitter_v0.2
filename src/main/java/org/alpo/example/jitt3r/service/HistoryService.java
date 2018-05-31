@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+//TODO Сделать в репе сортировку истории по дате от нового к старому
 
 @Service
 public class HistoryService {
@@ -17,7 +18,7 @@ public class HistoryService {
 
     public void saveCreatedNote(Desk currentDesk, Note currentNote, User currentUser) {
 
-        String message = " created new note with name ";
+        String message = "Created new note.";
         history = new History(message, new Date(),currentUser);
         history.setNote(currentNote);
         history.setDesk(currentDesk);
@@ -27,7 +28,7 @@ public class HistoryService {
 
     public void addDescriptionNote(Note currentNote, User currentUser) {
 
-        String message = " created description in ";
+        String message = "Added new description.";
         history = new History(message, new Date(),currentUser);
         history.setNote(currentNote);
         history.setDesk(currentNote.getDesk());
@@ -36,7 +37,7 @@ public class HistoryService {
     }
 
     public void uploadFile(String originalName, Note currentNote, User currentUser) {
-        String message = " uploaded "+originalName+" file to ";
+        String message = "Uploaded new file";
         history = new History(message,new Date(),currentUser);
         history.setNote(currentNote);
         history.setDesk(currentNote.getDesk());
@@ -45,7 +46,7 @@ public class HistoryService {
     }
 
     public void replyToComment(Note currentNote, User currentUser, Comment commentId) {
-        String message = "answer to "+commentId.getAuthor().getUsername()+" on his message ID:"+commentId.getId();
+        String message = "<u>"+currentUser.getUsername()+"</u> answer to <u>"+commentId.getAuthor().getUsername()+"</u> on message <small>ID:"+commentId.getId()+"</small>";
         history = new History(message,new Date(),currentUser);
         history.setNote(currentNote);
         history.setDesk(currentNote.getDesk());
@@ -54,7 +55,7 @@ public class HistoryService {
     }
 
     public void newCommentSave(User user, Note currentNote) {
-        String message = " added new comment at";
+        String message = "<u>"+user.getUsername()+"</u> added new comment.";
         history = new History(message, new Date(),user);
         history.setNote(currentNote);
         history.setDesk(currentNote.getDesk());

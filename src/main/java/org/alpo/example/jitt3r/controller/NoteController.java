@@ -12,7 +12,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 @Controller
@@ -67,7 +76,7 @@ public class NoteController {
 
         model.put("count",commentRepo.countAllByNote(note));
         model.put("histories",historyRepo.findAllByNoteOrderById(note));
-        model.put("image",uploadFileRepo.findAllByNote(note));
+        model.put("images",uploadFileRepo.findAllByNote(note));
         model.put("note", note);
         model.put("tags",tagRepo.findAllByProject(note.getProject()));
         model.put("comment",commentRepo.findAllByNoteOrderByDate(note));
@@ -102,7 +111,8 @@ public class NoteController {
 
         History history;
         if (!noteName.equals("") || !StringUtils.isEmpty(noteName)) {
-            Note note = new Note(noteName, new Date(), user, desk, desk.getProject());
+            Note note = new Note(noteName, LocalDate.now(), user, desk, desk.getProject());
+            note.setCreatedDate(LocalDate.now());
             noteRepo.save(note);
             historyService.saveCreatedNote(desk, note, user);
         }
@@ -161,24 +171,15 @@ public class NoteController {
 
     }
 
-
-    @PostMapping(value = "reply")
-    public String replyMessage(
-            @AuthenticationPrincipal User user,
-            @RequestParam String message,
-            @RequestParam Note note,
-            @RequestParam Comment commentId,
-            Model model) {
-
-        if (commentService.checkMessage(message,user,note,commentId)) {
-
-            historyService.replyToComment(note,user,commentId);
-            return "redirect:/notes/"+note.getId();
-        }
-
-        return "redirect:/notes/"+note.getId();
-    }
-
+    /**
+     *
+     * @param user
+     * @param comment
+     * @param note
+     * @param commentId
+     * @param model
+     * @return
+     */
     @PostMapping(value = "comment")
     public String addMessage(
             @AuthenticationPrincipal User user,
@@ -199,7 +200,43 @@ public class NoteController {
         return "redirect:/notes/"+note.getId();
     }
 
+    @PostMapping(value = "dateOperate")
+    public String dateOperate(
+            @AuthenticationPrincipal User user,
+            @RequestParam Note note,
+            @RequestParam String date,
+            Model model) {
 
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate deadline = LocalDate.parse(date,format);
+        note.setDeadLine(deadline);
+        return "redirect:/notes/"+note.getId();
+    }
 
+    private String compare(LocalDate localDate) {
 
+        LocalDate now = LocalDate.now();
+
+        int today = now.getDayOfYear();
+        int tomonth = now.getMonthValue();
+        int year = now.getYear();
+        System.out.println(today+"-"+tomonth+"-"+year);
+
+        int dayCompare = localDate.getDayOfYear();
+        int monthCompare = localDate.getMonthValue();
+        int yearCompare = localDate.getYear();
+
+        String message = "";
+
+        if (today-dayCompare<30 && year==yearCompare) {
+            message = today-dayCompare+" days ago.";
+        } else if (today-dayCompare>30 && year==yearCompare) {
+            message = (tomonth-monthCompare)%30+" month ago.";
+        } else if (tomonth<monthCompare && year-yearCompare<2) {
+            message = localDate.lengthOfMonth()-localDate.getDayOfMonth()+LocalDate.now().getDayOfMonth()+" days ago.";
+        } else if (year>yearCompare ){
+            message = year-yearCompare+" years ago.";
+        }
+        return message;
+    }
 }

@@ -1,6 +1,7 @@
 package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,9 +14,9 @@ public class Note {
     private String name;
     private String message;
     private boolean done;
-    private Date created;
-    private Date deadLine;
     private String description;
+    private LocalDate createdDate;
+    private LocalDate deadLine;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -32,9 +33,9 @@ public class Note {
     public Note() {
     }
 
-    public Note(String name, Date created, User author, Desk desk, Project project) {
+    public Note(String name, LocalDate created, User author, Desk desk, Project project) {
         this.name = name;
-        this.created = created;
+        this.createdDate = created;
         this.author = author;
         this.desk = desk;
         this.project = project;
@@ -80,21 +81,6 @@ public class Note {
         this.done = done;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getDeadLine() {
-        return deadLine;
-    }
-
-    public void setDeadLine(Date deadLine) {
-        this.deadLine = deadLine;
-    }
 
     public User getAuthor() {
         return author;
@@ -118,6 +104,22 @@ public class Note {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(LocalDate deadLine) {
+        this.deadLine = deadLine;
     }
 }
 

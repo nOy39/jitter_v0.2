@@ -1,6 +1,7 @@
 package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,7 +24,7 @@ public class Comment {
     @JoinColumn(name = "note_id")
     private Note note;
 
-    private Date date;
+    private LocalDate date;
 
     private int likes;
 
@@ -72,11 +73,11 @@ public class Comment {
         this.note = note;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
