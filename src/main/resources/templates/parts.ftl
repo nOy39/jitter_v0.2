@@ -3,7 +3,7 @@
 
 <h3>Project <i style="color: #111133">${project.getPrj_name()}</i> was created <i>${project.createdDate}</i></h3>
     <#--<form method="post" action="/projects/edit">-->
-        <#--<input type="text" name="projectName" value="${project.getPrj_name()}">-->
+        <#--<input type="text" name="projectName" value="${project.getProjectName()}">-->
         <#--<input type="hidden" value="${project.id}" name="projectId">-->
         <#--<label class="container" id="public">public-->
             <#--<input type="radio" ${project.public?string('checked="checked"','')} name="radio" value="public">-->
@@ -28,7 +28,7 @@
     <div class="uk-margin">
         <label class="uk-form-label" for="form-horizontal-text">Project name:</label>
         <div class="uk-form-controls">
-            <input class="uk-input uk-width-1-2" id="form-horizontal-text" name="name" placeholder="${project.prj_name}">
+            <input class="uk-input uk-width-1-2" id="form-horizontal-text" name="name" placeholder="${project.projectName}">
         </div>
     </div>
 

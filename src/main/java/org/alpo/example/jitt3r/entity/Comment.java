@@ -24,6 +24,10 @@ public class Comment {
     @JoinColumn(name = "note_id")
     private Note note;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     private LocalDate date;
 
     private int likes;
@@ -95,5 +99,13 @@ public class Comment {
 
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

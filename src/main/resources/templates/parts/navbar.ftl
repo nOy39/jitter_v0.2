@@ -59,7 +59,7 @@
                 <#list projects as project>
             <ul class="uk-nav-sub">
                 <li>
-                <li><a href="/desk/${project.id}/list/"><span class="uk-margin-small-right" uk-icon="icon: grid"></span>${project.prj_name}</a></li>
+                <li><a href="/desk/${project.id}/list/"><span class="uk-margin-small-right" uk-icon="icon: grid"></span>${project.projectName}</a></li>
                 </li>
             </ul>
                 </#list>
@@ -67,7 +67,7 @@
             <#if desks??>
 
             <span class="uk-margin-small-right" uk-icon="icon: grid"></span>
-            <span>${project.getPrj_name()}</span>
+            <span>${project.projectName}</span>
             <li class="uk-nav-divider"></li>
                 <#list desks as desk>
                 <ul class="uk-nav-sub">

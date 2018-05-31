@@ -4,6 +4,7 @@ import org.alpo.example.jitt3r.entity.Project;
 import org.alpo.example.jitt3r.entity.User;
 import org.alpo.example.jitt3r.repos.ProjectRolesRepo;
 import org.alpo.example.jitt3r.repos.ProjectsRepo;
+import org.alpo.example.jitt3r.service.HistoryService;
 import org.alpo.example.jitt3r.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -28,53 +27,69 @@ public class ProjectController {
     @Autowired
     ProjectRolesRepo projectRolesRepo;
 
+    @Autowired
+    HistoryService historyService;
+
     @GetMapping
     public String projectList(@AuthenticationPrincipal User user,
                               Map<String, Object> model) {
 
-        model.put("projects", projectsRepo.findAllByAuthor(user));
+        model = projectService.modelPut(user, model);
 
-        model.put("publProjects",projectsRepo.findAllByPubl(true));
-
-        model.put("shareProject", projectRolesRepo.findAllByAuthor(user));
         return "projects";
     }
 
-    @GetMapping(value = "add")
-    public String addProjectTemplate(@AuthenticationPrincipal User user, Model model) {
-        return "add";
-    }
-
-    @PostMapping(value = "add")
-    public String addProject(@AuthenticationPrincipal User user,
+    @PostMapping
+    public String createProject(@AuthenticationPrincipal User user,
                              @RequestParam String name,
                              @RequestParam String description,
-                             @RequestParam String deadline,
                              @RequestParam String radioIsPublic,
-                             Model model) {
+                             Map<String, Object> model) {
 
-        SimpleDateFormat sformat = new SimpleDateFormat("yyyy.MM.dd");
-        String dateForm = projectService.getDeadlineDate(deadline);
-
-        boolean chekingDate = (sformat.format(new Date()).compareTo(dateForm)<0);
         boolean isPublic = (radioIsPublic.equals("public"));
-        System.out.println("today: "+projectService.getToday()+"\n form date: "+dateForm);
-        System.out.println(chekingDate);
-        if (chekingDate) {
-            Project project = new Project(name,
-                    description,
-                    projectService.getUID(),
-                    isPublic,
-                    projectService.getToday(),
-                    user);
+        Project project = new Project(name,
+                description,
+                projectService.getUID(),
+                isPublic,
+                projectService.getToday(),
+                user);
 
-            projectsRepo.save(project);
-        }
+        projectsRepo.save(project);
+        historyService.createNewProject(project, user, isPublic);
 
-        model.addAttribute("messageDateError","Error date");
+        model = projectService.modelPut(user, model);
+        model.put("message","Project "+name+" was created.");
 
-        return "add";
+        return "projects";
     }
+
+    /**
+     * Удаление проекта
+     * @param user
+     * @param project
+     * @param projectName
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "delete")
+    public String deleteProject(@AuthenticationPrincipal User user,
+                                @RequestParam Project project,
+                                @RequestParam String projectName,
+                                Map<String, Object> model) {
+
+        boolean confirmDelete = (projectName.equals(project.getProjectName()));
+        if (confirmDelete && user.getUsername()==project.getAuthor().getUsername()) {
+            projectService.deleteProject(project, user);
+            model = projectService.modelPut(user, model);
+            model.put("message","Project "+projectName+" was deleted.");
+            return "projects";
+        }
+        model = projectService.modelPut(user, model);
+        model.put("message","Project "+projectName+" was not delete.");
+        return "projects";
+
+    }
+
 
     @GetMapping(value = "setting/{project}")
     public String settingProject(@AuthenticationPrincipal User user,

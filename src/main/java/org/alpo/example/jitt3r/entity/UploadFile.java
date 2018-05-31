@@ -25,6 +25,10 @@ public class UploadFile {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     public UploadFile() {
     }
 
@@ -76,4 +80,11 @@ public class UploadFile {
         this.author = author;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 }

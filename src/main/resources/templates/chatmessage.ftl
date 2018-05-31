@@ -15,6 +15,8 @@
 </form>
 <ul>
 
+
+
     <#list comment as msg>
         <#if !msg.reply??>
             <li>
@@ -23,6 +25,8 @@
             </li>
         </#if>
     </#list>
+
+
 
 <#macro treeView msg listReply>
     <#list listReply as reply>
@@ -37,37 +41,19 @@
     </#list>
 </#macro>
 
-<#--<#list comment as msg>-->
-<#--<#if !msg.reply??>-->
-<#--<li>-->
-<#--${msg.message}-->
-<#--<ul>-->
-<#--<li>-->
-<#--<#list replies as reply>-->
-<#--<#if reply.reply.toString() == msg.toString()>-->
-<#--${reply.message}-->
-<#--<#list replies as sub_reply>-->
-<#--<#if sub_reply.reply.toString() == reply.toString()>-->
-<#--<ul>-->
-<#--<li>-->
-<#--${sub_reply.message}-->
-<#--</li>-->
-<#--</ul>-->
-<#--</#if>-->
-<#--</#list>-->
-<#--</#if>-->
 
-<#--</#list>-->
-<#--</li>-->
-<#--</ul>-->
-<#--</li>-->
-<#--</#if>-->
-<#--</#list>-->
-</ul>
-
-<div class="uk-background-muted">
-    <div class="uk-width uk-width-5-6@m  uk-width-5-6@l uk-background-blend-color">
-ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+    <div class="uk-container uk-container-center">
+        <ul class="uk-tab" data-uk-tab="{connect:'#my-id'}">
+            <li><a href="">Setting</a></li>
+            <li><a href="">Tab 2</a></li>
+            <li><a href="">Tab 3</a></li>
+        </ul>
+        <ul id="my-id" class="uk-switcher uk-margin">
+            <li><a href="#" id="autoplayer" data-uk-switcher-item="next"></a>
+                This slide contains a hidden link, that selects the next slide when clicked. The click is simulated by jacascript to mimic autoplay.
+            </li>
+            <li>Content 2</li>
+            <li>Content 3</li>
+        </ul>
     </div>
-</div>
 </@c.page>

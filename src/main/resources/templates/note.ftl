@@ -1,10 +1,10 @@
 <#import "parts/common.ftl" as c>
 <#import "parts/bigparalax.ftl" as p1>
+<#include "parts/security.ftl">
 <@c.page>
 <#--TODO Сделать Setting-->
 <#--TODO Сделать лайки-->
 <#--TODO сделать время последнего сообщения-->
-<#--TODO сделать галерею загрузки-->
 <div class="uk-grid-match uk-grid-small uk-text-center" uk-grid xmlns="http://www.w3.org/1999/html">
     <div class="uk-width-2-3 uk-width-2-3@xl">
         <div class="uk-card uk-card-default uk-card-body">
@@ -13,7 +13,7 @@
 
                 <h1 class="uk-article-title"><a class="uk-link-reset" href="">${note.name}</a></h1>
 
-                <p class="uk-article-meta">Written by ${note.author.username} on ${note.created}. Posted in <a class="uk-text-primary" href="#">${note.desk.name}</a></p>
+                <p class="uk-article-meta">Written by ${note.author.username} on ${note.createdDate}. Posted in <a class="uk-text-primary" href="#">${note.desk.name}</a></p>
 
             <#if note.description??>
             <p class= "uk-text-large">${note.description}</p>
@@ -58,7 +58,6 @@
             </article>
         </div>
     </div>
-<#--TODO: Сделать норм контейнер для списка History-->
     <div class="uk-width-1-3 uk-width-1-3@xl">
         <div class="uk-card uk-card-default uk-card-body">
             <div class="uk-offcanvas-content">

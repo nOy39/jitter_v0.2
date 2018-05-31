@@ -13,4 +13,7 @@ public interface HistoryRepo extends JpaRepository<History, Long> {
     List<History> findAllByProjectOrderById(Project project);
     List<History> findAllByDeskOrderById(Desk desk);
     List<History> findAllByNoteOrderById(Note note);
+    List<History> findAllByNoteOrderByCreatedDesc(Note note);
+    List<History> findAllByProject(Project project);
+    List<History> removeAllByProject(Project project);
 }

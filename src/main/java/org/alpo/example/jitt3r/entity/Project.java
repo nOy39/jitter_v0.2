@@ -1,6 +1,7 @@
 package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -10,14 +11,14 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String prj_name;
+    private String projectName;
     private String description;
     private String uniqid;
 
     private boolean isactive;
     private boolean publ;
 
-    private String createdDate;
+    private LocalDate createdDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -30,10 +31,15 @@ public class Project {
     public Project() {
     }
 
-    public Project(String prj_name, String description, String uniqid, boolean is_public, String createdDate, User author) {
+    public Project(String projectName,
+                   String description,
+                   String uniqid,
+                   boolean is_public,
+                   LocalDate createdDate,
+                   User author) {
 
         this.description = description;
-        this.prj_name = prj_name;
+        this.projectName = projectName;
         this.uniqid = uniqid;
         this.author = author;
         this.publ = is_public;
@@ -49,12 +55,12 @@ public class Project {
         this.id = id;
     }
 
-    public String getPrj_name() {
-        return prj_name;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setPrj_name(String prj_name) {
-        this.prj_name = prj_name;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public User getAuthor() {
@@ -97,11 +103,11 @@ public class Project {
         this.isactive = isactive;
     }
 
-    public String getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -113,17 +119,4 @@ public class Project {
         this.share = share;
     }
 
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", prj_name='" + prj_name + '\'' +
-                ", description='" + description + '\'' +
-                ", uniqid='" + uniqid + '\'' +
-                ", isactive=" + isactive +
-                ", publ=" + publ +
-                ", createdDate='" + createdDate + '\'' +
-                ", author=" + author +
-                '}';
-    }
 }

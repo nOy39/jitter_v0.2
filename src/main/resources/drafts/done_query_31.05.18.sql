@@ -1,7 +1,7 @@
 create sequence hibernate_sequence start 1 increment 1
 create table desk (id int8 not null, class_style varchar(255), is_public boolean not null, name varchar(255), project_id int8, primary key (id))
 create table message (id int8 not null, filename varchar(255), head varchar(255), tag varchar(255), text varchar(255), user_id int8, primary key (id))
-create table project (id int8 not null, created_date varchar(255), description varchar(255), isactive boolean not null, prj_name varchar(255), publ boolean not null, uniqid varchar(255), user_id int8, primary key (id))
+create table project (id int8 not null, created_date varchar(255), description varchar(255), isactive boolean not null, projectName varchar(255), publ boolean not null, uniqid varchar(255), user_id int8, primary key (id))
 create table project_role (id int8 not null, user_id int8, project_id int8, share_id int8, primary key (id))
 create table tag (id int8 not null, color varchar(255), name varchar(255), user_id int8, project_id int8, primary key (id))
 create table upload_file (id int8 not null, filename varchar(255), original_name varchar(255), user_id int8, desk_id int8, note_id int8, primary key (id))

@@ -11,5 +11,6 @@ public interface ProjectsRepo extends JpaRepository<Project, Long> {
     Project findByUniqid(String code);
     List<Project> findAllByAuthor(User user);
     List<Project> findAllByPubl(boolean isPublic);
+    List<Project> findAllByAuthorNotAndPublIsTrue(User user);
 
 }

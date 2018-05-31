@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-//TODO Сделать в репе сортировку истории по дате от нового к старому
 
 @Service
 public class HistoryService {
@@ -60,6 +59,24 @@ public class HistoryService {
         history.setNote(currentNote);
         history.setDesk(currentNote.getDesk());
         history.setProject(currentNote.getProject());
+        historyRepo.save(history);
+    }
+
+    public void createNewProject(Project currentProject, User author, boolean isPublic) {
+        String message = "";
+        if (isPublic) {
+            message = "Create new public project";
+        } else {
+            message = "Create new private project";
+        }
+        history = new History(message, new Date(),author);
+        history.setProject(currentProject);
+        historyRepo.save(history);
+    }
+
+    public void deleteProject(Project currentProject) {
+        String message = "Project ID:"+currentProject.getId()+", Name:"+currentProject.getProjectName()+", was delete user:"+currentProject.getAuthor().getUsername();
+        history = new History(message, new Date(),currentProject.getAuthor());
         historyRepo.save(history);
     }
 }

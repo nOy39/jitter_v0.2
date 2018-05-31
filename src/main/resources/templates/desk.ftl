@@ -1,16 +1,19 @@
 <#import "parts/common.ftl" as c>
 <#import "parts/modal.ftl" as m>
+<#include "parts/security.ftl">
 <@c.page>
 
 <#--Название проекта-->
 <div class="uk-text-uppercase uk-text-large uk-text-primary uk-text-center" xmlns="http://www.w3.org/1999/html">
-    <span>${project.getPrj_name()}</span>
+    <span>${project.projectName}</span>
 
 <#--отображение досок -->
 <div uk-filter="target: .js-filter">
 <#--Сортировка-->
     <ul class="uk-subnav uk-subnav-pill">
+        <#if name == project.author.username>
         <li><a href="#modal-${project.id}" uk-toggle>addnewdesk</a> </li>
+        </#if>
         <li class="uk-active" uk-filter-control><a href="#">All</a></li>
         <li uk-filter-control="[data-color='primary']"><a href="#">primary</a></li>
         <li uk-filter-control="[data-color='secondary']"><a href="#">secondary</a></li>
@@ -31,6 +34,8 @@
                             </span>
                         </h4>
                         <ul class="uk-list">
+                            <#if name == project.author.username>
+
                             <li>
                                 <form method="post" action="/notes/add">
                                     <div class="uk-margin">
@@ -41,6 +46,7 @@
                                     </div>
                                 </form>
                             </li>
+                                </#if>
                             <#--Цикл пробега по коллекции notes-->
                              <#list notes as note>
                                  <#if note.desk == desk>

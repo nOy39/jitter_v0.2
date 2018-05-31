@@ -41,6 +41,7 @@ public class CommentService{
         newComment.setDate(LocalDate.now());
         newComment.setLikes(0);
         newComment.setDislikes(0);
+        newComment.setProject(currentNote.getProject());
         commentRepo.save(newComment);
 
         return true;
@@ -56,6 +57,7 @@ public class CommentService{
         newComment.setDate(LocalDate.now());
         newComment.setLikes(0);
         newComment.setDislikes(0);
+        newComment.setProject(note.getProject());
         commentRepo.save(newComment);
     }
 }

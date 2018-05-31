@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface NoteRepo extends JpaRepository<Note, Long> {
     List<Project> findAllByDesk(Desk desk);
-
     List<Note> findAllByProject(Project project);
+    List<Note> deleteAllByProject(Project project);
 }

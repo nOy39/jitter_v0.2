@@ -75,7 +75,7 @@ public class NoteController {
             Map<String, Object> model) {
 
         model.put("count",commentRepo.countAllByNote(note));
-        model.put("histories",historyRepo.findAllByNoteOrderById(note));
+        model.put("histories",historyRepo.findAllByNoteOrderByCreatedDesc(note));
         model.put("images",uploadFileRepo.findAllByNote(note));
         model.put("note", note);
         model.put("tags",tagRepo.findAllByProject(note.getProject()));
@@ -162,6 +162,7 @@ public class NoteController {
             uploadFile = fileService.upload(file,"notes");
             uploadFile.setOriginalName(file.getOriginalFilename());
             uploadFile.setNote(note);
+            uploadFile.setProject(note.getProject());
             uploadFileRepo.save(uploadFile);
 
             historyService.uploadFile(uploadFile.getOriginalName(),note,user);
