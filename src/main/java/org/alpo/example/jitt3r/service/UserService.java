@@ -27,6 +27,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private MailSender mailSender;
 
+    @Autowired
+    private ProjectService projectService;
+
 //    public UserService(UserRepo userRepo) {
 //        this.userRepo = userRepo;
 //    }
@@ -130,4 +133,5 @@ public class UserService implements UserDetailsService {
     public void deleteUser(User user) {
         userRepo.deleteById(user.getId());
     }
+
 }

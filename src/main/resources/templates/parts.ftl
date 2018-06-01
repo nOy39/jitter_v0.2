@@ -60,8 +60,8 @@
     <div class="uk-margin">
         <div class="uk-form-label">Set active project:</div>
         <div class="uk-form-controls uk-form-controls-text">
-            <label><input class="uk-radio" type="radio" ${project.isactive?string('','checked="checked"')} name="radioIsActive" value="false" disabled> Disable</label><br>
-            <label><input class="uk-radio" type="radio" ${project.isactive?string('checked="checked"','')} name="radioIsActive" value="true" disabled> Enable</label>
+            <label><input class="uk-radio" type="radio" ${project.share?string('','checked="checked"')} name="radioIsActive" value="false" disabled> Disable</label><br>
+            <label><input class="uk-radio" type="radio" ${project.share?string('checked="checked"','')} name="radioIsActive" value="true" disabled> Enable</label>
         </div>
     </div>
     <div>

@@ -1,8 +1,8 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
-<#--TODO сделать расшаривание проекта-->
+<#--TODO сделать интернационализацию-->
     <#if message??>
-<div class="uk-width-1-1 uk-grid-match" uk-grid>
+<div class="uk-width-1-1 uk-grid-match" uk-grid xmlns="http://www.w3.org/1999/html">
     <div class="uk-width-1-1 alert alert-success" role="alert">
         ${message}
     </div>
@@ -29,16 +29,22 @@
     <div>
         <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-box-shadow-small uk-box-shadow-hover">
             <div class="uk-card-badge">
+
                 <#if project.publ>
-                <span uk-icon="social"></span>
+                <span uk-icon="social" uk-tooltip="Yor project is public"></span>
+                </#if>
+                <#if project.isShare()>
+                <span uk-icon="users" uk-tooltip="Yor project was share for other users"></span>
                 </#if>
                 <a href="#offcanvas-setting-${project.id}" uk-icon="icon: settings" style="color: " uk-tooltip="Setting" uk-toggle></a>
             </div>
             <h3 class="uk-card-title"><a href="/desk/${project.id}/list/">${project.projectName}</a></h3>
 
             <p>${project.description?ifExists}</p>
+            <small>admin</small>
         </div>
 
+    <#--Раскрывающееся меню-->
         <div class="uk-offcanvas-content">
             <div id="offcanvas-setting-${project.id}" uk-offcanvas="flip: true; overlay: true">
                 <div class="uk-offcanvas-bar">
@@ -47,26 +53,68 @@
                     <hr>
                     <h4>Settings</h4>
                     <hr>
-                    <a href="#modal-confirm-${project.id}" class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit" uk-toggle>Delete project</a>
-                    <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit">вычислить дату</button>
+                    <button href="#modal-rename-${project.id}" class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit" uk-toggle>Rename project</button>
+                    <button href="#modal-confirm-${project.id}" class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit" uk-toggle>Delete project</button>
+                    <button href="#modal-share-${project.id}" class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit" uk-toggle>Invite other user</button>
+                    <form method="get" action="/projects/userlist/"></form>
+                    <input type="hidden" name="project" value="${project.id}">
+                    <a type="submit" href="/projects/userlist/${project.id}" class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit" ${project.isShare()?string('','disabled')}>List users</a>
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    </form>
                     <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" type="submit">вычислить дату</button>
                     <button class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom">Button</button>
                 </div>
             </div>
         </div>
+    <#--Модальное окно приглашения пользователя-->
 
+    <#--Модальное окно удаление проекта-->
         <div id="modal-confirm-${project.id}" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">Are you sure?</h2>
                 <form method="post" name="deleteProject" action="/projects/delete">
-                <p>Please enter project name</p>
+                    <p>Please enter project name</p>
                     <input class="uk-input" name="projectName" placeholder="Enter project name">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
                     <input type="hidden" name="project" value="${project.id}">
-                <p class="uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary" type="submit">Confirm</button>
-                </p>
+                    <p class="uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                        <button class="uk-button uk-button-primary" type="submit">Confirm</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    <#--Модальное окно приглашения пользователя-->
+        <div id="modal-share-${project.id}" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Are you sure?</h2>
+                <form method="post" name="shareProject" action="/projects/share">
+                    <p>Please enter project name</p>
+                    <input class="uk-input" name="username" placeholder="Enter user name">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="hidden" name="project" value="${project.id}">
+                    <p class="uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                        <button class="uk-button uk-button-primary" type="submit">Confirm</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    <#--Модальное окно изменения проекта-->
+        <div id="modal-rename-${project.id}" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Are you sure?</h2>
+                <p>Please enter project name</p>
+                <form method="post" name="renameProject" action="/projects/rename">
+
+                    <input class="uk-input" name="projectName" placeholder="${project.projectName}">
+                    <input class="uk-input" name="description" placeholder="${project.description}">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="hidden" name="project" value="${project.id}">
+                    <p class="uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                        <button class="uk-button uk-button-primary" type="submit">Confirm</button>
+                    </p>
                 </form>
             </div>
         </div>
@@ -80,32 +128,12 @@
 <a href="" uk-icon="icon: settings"></a>
 
 <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
-    <#list publProjects as project>
-        <div>
-            <div class="uk-card uk-card-primary uk-card-hover uk-card-body uk-box-shadow-small uk-box-shadow-hover">
-                <#--<div class="uk-card-badge">-->
-                <#--&lt;#&ndash;<span uk-icon="icon: ${project.isactive?string('check','ban')}"&ndash;&gt;-->
-                <#--&lt;#&ndash;style="color: ${project.isactive?string('green','red')}" uk-tooltip=${project.isactive?string('"Enable Project"','"Disable project"')}></span>&ndash;&gt;-->
-                <#--&lt;#&ndash;<span uk-icon="icon: ${project.publ?string('social','lock')}"&ndash;&gt;-->
-                <#--&lt;#&ndash;style="color: ${project.publ?string('green','red')}"" uk-tooltip=${project.publ?string('"Public project"','"Private project"')}></span>&ndash;&gt;-->
-
-                    <#--<a href="/projects/setting/${project.id}" uk-icon="icon: settings" style="color: " uk-tooltip="Setting"></a>-->
-                <#--</div>-->
-                <h3 class="uk-card-title"><a href="/desk/${project.id}/list/">${project.projectName}</a></h3>
-
-                <p>${project.description?ifExists}</p>
-            </div>
-        </div>
-    </#list>
-</div>
-
-<div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
     <#list shareProject as share>
         <div>
             <div class="uk-card uk-card-secondary uk-card-hover uk-card-body uk-box-shadow-small uk-box-shadow-hover">
                 <div class="uk-card-badge">
-                <#--<span uk-icon="icon: ${project.isactive?string('check','ban')}"-->
-                <#--style="color: ${project.isactive?string('green','red')}" uk-tooltip=${project.isactive?string('"Enable Project"','"Disable project"')}></span>-->
+                <#--<span uk-icon="icon: ${project.share?string('check','ban')}"-->
+                <#--style="color: ${project.share?string('green','red')}" uk-tooltip=${project.share?string('"Enable Project"','"Disable project"')}></span>-->
                 <#--<span uk-icon="icon: ${project.publ?string('social','lock')}"-->
                 <#--style="color: ${project.publ?string('green','red')}"" uk-tooltip=${project.publ?string('"Public project"','"Private project"')}></span>-->
 
@@ -114,6 +142,7 @@
                 <h3 class="uk-card-title"><a href="/desk/${share.id}/list/">${share.project.projectName}</a></h3>
 
                 <p>${share.project.description?ifExists}</p>
+
             </div>
         </div>
     </#list>

@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProjectRolesRepo extends JpaRepository<ProjectRole, Long> {
+
     List<ProjectRole> findAllByAuthor(User user);
     List<ProjectRole> findAllByProject(Project project);
+
+    ProjectRole findByAuthorAndProject(User user, Project project);
 }

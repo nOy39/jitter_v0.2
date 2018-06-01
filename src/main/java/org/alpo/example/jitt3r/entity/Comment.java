@@ -4,35 +4,63 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ * Сущьность таблицы коментарий ноты
+ */
 @Entity
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    /**
+     * сообщение
+     */
     private String message;
 
+    /**
+     * дата сохранения сообщения
+     */
+    private LocalDate date;
+
+    /**
+     * like message
+     */
+    private int likes;
+
+    /**
+     * dislikes message
+     */
+    private int dislikes;
+
+
+    /**
+     * ссылка на сообщения для формирования ответов.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "comment_id")
     private Comment reply;
 
+    /**
+     * автор.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private User author;
 
+    /**
+     * нота в которой формируются коментарии.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "note_id")
     private Note note;
 
+    /**
+     * "project_id"
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
-
-    private LocalDate date;
-
-    private int likes;
-
-    private int dislikes;
 
     public Comment() {
     }

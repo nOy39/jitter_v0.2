@@ -60,7 +60,7 @@ public class DeskController {
         desk.setProject(project);
         deskRepo.save(desk);
 
-        History history = new History("create desk",new Date(),user);
+        History history = new History("create desk",user);
         history.setDesk(desk);
         history.setProject(project);
 

@@ -60,7 +60,7 @@ primary key (id)
   id int8 not null,
   created_date date,
   description varchar(255),
-  isactive boolean not null,
+  share boolean not null,
   project_name varchar(255),
   publ boolean not null,
   uniqid varchar(255),

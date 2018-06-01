@@ -88,8 +88,14 @@ public class ProjectService {
         return day+"."+month+"."+year;
     }
 
+    /**
+     * Метод удаления проекта, перед удалением проекта удаляет все записи из таблиц в которых есть
+     * ссылка на этот проект.
+     * @param currentProject - проект который подлежит удалению
+     * @param author - автор проекта. (не используется возможно будет удален из метода)
+     */
     public void deleteProject(Project currentProject, User author) {
-        System.out.println(currentProject.getProjectName()+" will be delete "+author.getUsername());
+
         List<History> historyList = historyRepo.findAllByProject(currentProject);
         List<Comment> commentList = commentRepo.findAllByProject(currentProject);
         List<UploadFile> uploadFileList = uploadFileRepo.findAllByProject(currentProject);
@@ -121,4 +127,10 @@ public class ProjectService {
         return model;
     }
 
+    public void shareProject(User inviteUsers, Project project) {
+        ProjectRole projectRole = new ProjectRole(project, inviteUsers);
+        project.setShare(true);
+        projectsRepo.save(project);
+        projectRolesRepo.save(projectRole);
+    }
 }

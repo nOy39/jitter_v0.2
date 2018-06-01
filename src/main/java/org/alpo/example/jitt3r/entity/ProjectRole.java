@@ -20,6 +20,11 @@ public class ProjectRole {
     public ProjectRole() {
     }
 
+    public ProjectRole(Project project, User user) {
+        this.project = project;
+        this.author = user;
+    }
+
     public Long getId() {
         return id;
     }

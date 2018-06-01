@@ -2,6 +2,9 @@ package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
 
+/**
+ * Сущность таблицы загрузки файлов
+ */
 @Entity
 public class UploadFile {
 
@@ -9,22 +12,42 @@ public class UploadFile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    /**
+     * {@value} filename - имя файла, генерируемое название, для хранения на сервере
+     */
     private String filename;
 
+    /**
+     * {@value} originalName - оригинальное имя файла, для отображения пользователю.
+     */
     private String originalName;
 
+    /**
+     * Не используется возможно будет удалена
+     * TODO: Определиться с "desk_id" в UploadFile
+     * @serial desk -
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "desk_id")
     private Desk desk;
 
+    /**
+     * @serialField note - привязка загруженного файла к ноте, чтобы каждая нота имела свою галерею
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "note_id")
     private Note note;
 
+    /**
+     * TODO: Определиться с "user_id" в UploadFile
+     * @serialField author - пользователь который произвел загрузку файла.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
-
+    /**
+     * @serialField project_id - проект к которому относятся загружаемые файлы.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;

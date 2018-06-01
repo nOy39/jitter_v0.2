@@ -4,29 +4,43 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * Сущность таблицы Project
+ */
 @Entity
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    /**
+     * Название проекта.
+     */
     private String projectName;
+    /**
+     * Описание проекта
+     */
     private String description;
+    /**
+     * Уникальный номер проекта
+     */
     private String uniqid;
-
-    private boolean isactive;
+    /**
+     * расшаренность проета для других пользователей
+     */
+    private boolean isShare;
+    /**
+     * публичность проекта
+     */
     private boolean publ;
-
+    /**
+     * Дата создания проекта
+     */
     private LocalDate createdDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "share_id")
-    private Set<ProjectRole> share;
 
     public Project() {
     }
@@ -44,6 +58,7 @@ public class Project {
         this.author = author;
         this.publ = is_public;
         this.createdDate = createdDate;
+        this.isShare = false;
     }
 
 
@@ -95,14 +110,6 @@ public class Project {
         this.description = description;
     }
 
-    public boolean isIsactive() {
-        return isactive;
-    }
-
-    public void setIsactive(boolean isactive) {
-        this.isactive = isactive;
-    }
-
     public LocalDate getCreatedDate() {
         return createdDate;
     }
@@ -111,12 +118,11 @@ public class Project {
         this.createdDate = createdDate;
     }
 
-    public Set<ProjectRole> getShare() {
-        return share;
+    public boolean isShare() {
+        return isShare;
     }
 
-    public void setShare(Set<ProjectRole> share) {
-        this.share = share;
+    public void setShare(boolean share) {
+        isShare = share;
     }
-
 }
