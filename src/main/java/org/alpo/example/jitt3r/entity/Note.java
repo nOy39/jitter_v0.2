@@ -2,20 +2,39 @@ package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
+/**
+ * Сущность ноты
+ */
 @Entity
 public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    /**
+     * Имя ноты
+     */
     private String name;
+    /**
+     *Не используемое поле, удалить его если не найду применение
+     */
     private String message;
+    /**
+     * Булевое значения о выполнении ноты
+     */
     private boolean done;
+    /**
+     * Описание ноты
+     */
     private String description;
+    /**
+     * Дата создания
+     */
     private LocalDate createdDate;
+    /**
+     * Дата дэдлайна
+     */
     private LocalDate deadLine;
 
     @ManyToOne(fetch = FetchType.EAGER)

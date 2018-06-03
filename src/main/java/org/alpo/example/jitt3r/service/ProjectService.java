@@ -5,7 +5,6 @@ import org.alpo.example.jitt3r.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,44 +47,20 @@ public class ProjectService {
     @Autowired
     private ProjectRolesRepo projectRolesRepo;
 
+    /**
+     * Берем текущую дату из системы
+     * @return возвращаем текущую дату.
+     */
     public LocalDate getToday() {
         return LocalDate.now();
     }
 
-    public void updateProject(Project project, User user, String name, String description, String deadline, String radioIsPublic) {
-        String projectName = project.getProjectName();
-        String descript = project.getDescription();
-        if (name.equals("")) {
-            project.setProjectName(projectName);
-        }
-
-
-//        if (isNameChanged) {
-//            project.setProjectName(name);
-//        }
-
-        if (StringUtils.isEmpty(description)) {
-            project.setDescription(descript);
-        } else {
-            project.setDescription(description);
-        }
-        project.setAuthor(user);
-        System.out.println(project);
-        projectsRepo.save(project);
-
-    }
-
+    /**
+     * Создаем динамический UIN
+     * @return
+     */
     public String getUID() {
         return UUID.randomUUID().toString();
-    }
-
-    public String getDeadlineDate(String deadline) {
-        System.out.println(deadline);
-        String year = deadline.substring(0,4);
-        String month = deadline.substring(5,7);
-        String day = deadline.substring(8,10);
-        System.out.println(day+"."+month+"."+year);
-        return day+"."+month+"."+year;
     }
 
     /**
@@ -115,10 +90,15 @@ public class ProjectService {
         historyService.deleteProject(currentProject);
 
         projectsRepo.delete(currentProject);
-
-
     }
 
+    /**
+     * Метод заполнения Map model, для возвращения на страницы после действий
+     * @PostMapping - контроллеров
+     * @param user - Авторизированный пользователь
+     * @param model - коллекция типа MAP которая вернется на страницу
+     * @return - возвращает коллекцию Map model<code><String, Object></code>
+     */
     public Map modelPut(@AuthenticationPrincipal User user, Map<String, Object> model) {
         model.put("projects", projectsRepo.findAllByAuthor(user));
         model.put("publProjects",projectsRepo.findAllByAuthorNotAndPublIsTrue(user));
@@ -127,6 +107,12 @@ public class ProjectService {
         return model;
     }
 
+    /**
+     * Метод записывает приглашённого пользователя в таблицу ProjectRole
+     * и устанавливает проекту статус "isShare" = true
+     * @param inviteUsers - приглашённый пользователь
+     * @param project - проект который расшариваем
+     */
     public void shareProject(User inviteUsers, Project project) {
         ProjectRole projectRole = new ProjectRole(project, inviteUsers);
         project.setShare(true);

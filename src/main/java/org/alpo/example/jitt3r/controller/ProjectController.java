@@ -42,7 +42,7 @@ public class ProjectController {
      * Отображает страницу "Project" c проектами доступными пользователю
      * @param user - авторизованый пользователь
      * @param model - модель
-     * @return - возвращает страницу "projects"
+     * @return - возвращает страницу "projects.ftl"
      */
     @GetMapping
     public String projectList(@AuthenticationPrincipal User user,
@@ -216,12 +216,19 @@ public class ProjectController {
 
     }
 
+    /**
+     * Открывает страницу пользователей проекта
+     * @param user - авторизированный пользователь
+     * @param project - проект который просматриваем
+     * @param model - возвращаемая модель
+     * @return возвращает страницу listusers.ftl
+     */
     @GetMapping(value = "userlist/{project}")
     public String userList(@AuthenticationPrincipal User user,
                            @PathVariable Project project,
                            Map<String, Object> model) {
         model.put("users",projectRolesRepo.findAllByProject(project));
-        model.put("projec",project);
+        model.put("project",project);
 
         return "listusers";
     }

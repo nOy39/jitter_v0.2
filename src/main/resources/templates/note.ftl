@@ -4,92 +4,66 @@
 <@c.page>
 <#--TODO Сделать Setting-->
 <#--TODO Сделать лайки-->
-<#--TODO сделать время последнего сообщения-->
-<div class="uk-grid-match uk-grid-small uk-text-center" uk-grid xmlns="http://www.w3.org/1999/html">
+<#--TODO сделать фронт.-->
+<div class="uk-grid-match uk-grid-small" uk-grid xmlns="http://www.w3.org/1999/html">
+<#--Центральный блок-->
     <div class="uk-width-2-3 uk-width-2-3@xl">
         <div class="uk-card uk-card-default uk-card-body">
         <#--TODO Оставляю такой вид LOCKED!!!-->
             <article class="uk-article">
-
-                <h1 class="uk-article-title"><a class="uk-link-reset" href="">${note.name}</a></h1>
-
-                <p class="uk-article-meta">Written by ${note.author.username} on ${note.createdDate}. Posted in <a class="uk-text-primary" href="#">${note.desk.name}</a></p>
-
-            <#if note.description??>
-            <p class= "uk-text-large">${note.description}</p>
-            <p class="uk-article-meta"><a class="uk-text-primary" href="#modal-description" uk-toggle>Edit</a> description.</p>
-            <#else>
-            <p class= "uk-text-lead uk-text-muted">Description Empty</p>
-            <p class="uk-article-meta "><a class="uk-text-primary" href="#modal-description" uk-toggle>Add</a> description.</p>
-            </#if>
-                <div class="uk-grid-small uk-child-width-auto" uk-grid>
-                    <div>
-                    <a href="#target" class="uk-button uk-button-text" uk-scroll>
+                <h1 class="uk-article-title uk-text-uppercase"><a class="uk-link-reset" href="">${note.name}</a></h1>
+                <hr class="uk-divider-icon">
+                <#if note.description??>
+                <p class= "uk-text-large">${note.description}</p>
+                <#else>
+                <p class= "uk-text-lead uk-text-muted">Description Empty</p>
+                </#if>
+                <hr class="uk-divider-icon uk-position-bottom uk-position-large">
+                <p class="uk-article-meta uk-position-small uk-position-bottom-left"><a class="uk-text-primary" href="#modal-description" uk-toggle>Edit</a> description.</p>
+                <p class="uk-article-meta uk-position-bottom-right uk-position-medium">Create by ${note.author.username} on ${note.createdDate}. Posted in <a class="uk-text-primary" href="#">${note.desk.name}</a></p>
+            </article>
+        </div>
+    </div>
+<#--Левый БЛОК-->
+    <div class="uk-width-1-3 uk-width-1-3@xl">
+        <div class="uk-card uk-card-default uk-card-body">
+            <hr class="uk-divider-icon">
+            <div>
+                <button href="#modal-upload" class="uk-button uk-button-text uk-width-1-1" type="button" uk-toggle>Upload file</button>
+            </div>
+            <div class="uk-offcanvas-content">
+                <button class="uk-button uk-button-text uk-width-1-1" type="button" uk-toggle="target: #offcanvas-flip">operate</button>
+            </div>
+            <div class="uk-offcanvas-content">
+                <button class="uk-button uk-button-text uk-width-1-1" type="button" uk-toggle="target: #offcanvas-flip">History</button>
+            </div>
+            <div>
+            <a href="#target" class="uk-button uk-button-text uk-width-1-1" uk-scroll>
                         <#if 0<count>
                             ${count} Comments</a>
                         <#else>
                             Comments</a>
                         </#if>
-                        <a class="uk-button uk-button-text" href="#">Settings</a>
-                    </div>
-                    <form method="post" enctype="multipart/form-data" action="/notes/upload">
-
-                        <div class="uk-margin">
-                            <span class="uk-text-middle">Here is a text</span>
-                            <div uk-form-custom>
-                                <input type="file">
-                                <span class="uk-link">upload</span>
-                            </div>
-                        </div>
-
-                        <div class="uk-margin" uk-margin>
-                            <div uk-form-custom="target: true">
-                                <input type="file" name="file" id="customFile">
-                                <input class="uk-input uk-form-width-medium" type="text" placeholder="Select file" disabled>
-                                <input type="hidden" name="note" value="${note.id}">
-                                <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                            </div>
-                            <button class="uk-button uk-button-default">Submit</button>
-                        </div>
-                    </form>
-
-                </div>
-
-            </article>
-        </div>
-    </div>
-    <div class="uk-width-1-3 uk-width-1-3@xl">
-        <div class="uk-card uk-card-default uk-card-body">
-            <div class="uk-offcanvas-content">
-                <button class="uk-button uk-button-text" type="button" uk-toggle="target: #offcanvas-flip">History</button>
             </div>
-            <div class="uk-offcanvas-content">
-                <form method="post" action="/notes/dateOperate">
-                    <input type="date" name="date">
-                <input type="hidden" name="note" value="${note.id}">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button class="uk-button uk-button-text" type="submit">вычислить дату</button>
-                </form>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="uk-width-1-1@m uk-width-1-1@l">
-        <div class="uk-card uk-card-default uk-card-body">
-
+            <hr class="uk-divider-icon">
             <div uk-lightbox>
                 <#list images as image>
-                    <a href="/img/notes/${image.filename}" data-caption="Caption">
+                    <a href="/img/notes/${image.filename}" data-caption="${image.originalName}">
                         ${image.originalName}
                     </a>
                     <#sep>,
                 </#list>
             </div>
-        </div>
-    </div>
 
-    <div class="uk-width-1-1@m uk-width-1-1@l" id="target">
+            <hr>
+            <small>Total ${countFile} file uploaded.</small>
+        </div>
+
+    </div>
+<#--СПИСОК КОМЕНТОВ-->
+<#--TODO подумать как отображать коменты в стиле youtube, НЕ ДЕЛАТЬ ТУТ!!!-->
+<#--TODO подумать как изенить форму ввода коментария, НЕ ДЕЛАТЬ ТУТ-->
+    <div class="uk-width-2-3@m uk-width-2-3@l" id="target">
         <div class="uk-card uk-card-default uk-card-body">
             <form method="post" action="/notes/comment">
                 <div class="uk-overflow-auto" id="my-id">
@@ -112,6 +86,7 @@
                     </thead>
                     <tbody>
                 <#list comment as msg>
+
                     <#if !msg.reply??>
                         <@message msg/>
                         <@treeView msg replies/>
@@ -121,33 +96,55 @@
                 </table>
             </div>
         </div>
+        <a href="#" uk-totop uk-scroll></a>
     </div>
-    <a href="#" uk-totop uk-scroll></a>
+    <div class="uk-width-1-3@m uk-width-1-3@l">
+        <div class="uk-card uk-card-default uk-card-body">
+            <hr class="uk-divider-icon">
+            <form method="post" action="/notes/addtag" name="addTag">
+                <input class="uk-input uk-form-blank uk-width-4-5" type="text" placeholder="Input tag" name="tag">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="note" value="${note.id}">
+            </form>
+            <hr>
+            <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                <div>
+                  <#list tags as tag>
+                      <form action="/notes/${tag.id}" name="deleteTag" method="post">
+                      <input type="hidden" name="_csrf" value="${_csrf.token}">
+                      <button class="uk-button uk-button-text" type="submit"><span uk-icon="tag">${tag.name}</span></button><#sep >,
+                      </form>
+                  </#list>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <#-->-----------------------------------------------------------------------------------<-->
 <#-->----------------------------------Модальные окна-----------------------------------<-->
 <#-->-----------------------------------------------------------------------------------<-->
-
+<#-->Выбираем Tag<-->
 <#-->Добавление описания к ноте<-->
-    <div id="modal-description" uk-modal>
+    <div id="modal-upload" uk-modal>
         <div class="uk-modal-dialog">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <form method="post" action="/notes/description">
-                <div class="uk-modal-header">
-                    <h2 class="uk-modal-title">Description note</h2>
-                </div>
-                <div class="uk-modal-body">
-                    <textarea class="uk-textarea" rows="8" name="description" placeholder="${note.description?ifExists}"></textarea>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <input type="hidden" name="note" value="${note.id}">
-                </div>
-                <div class="uk-modal-footer uk-text-right">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                    <button class="uk-button uk-button-primary" type="submit">Save</button>
-            </form>
+            <div>
+                <form method="post" enctype="multipart/form-data" action="/notes/upload">
+
+                    <div class="uk-margin" uk-margin>
+                        <div uk-form-custom="target: true">
+                            <input type="file" name="file" id="customFile">
+                            <input class="uk-input uk-form-width-auto" type="text" placeholder="Select file" disabled>
+                            <input type="hidden" name="note" value="${note.id}">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                        </div>
+                        <button class="uk-button uk-button-default">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
 <#-->Коментарии<-->
     <div id="modal-coment" uk-modal>
         <div class="uk-modal-dialog">
@@ -168,6 +165,25 @@
         </div>
     </div>
 
+<#-->Загрузка файла описания к ноте<-->
+    <div id="modal-upload" uk-modal>
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <form method="post" action="/notes/description">
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">Description note</h2>
+                </div>
+                <div class="uk-modal-body">
+                    <textarea class="uk-textarea" rows="8" name="description" placeholder="${note.description?ifExists}"></textarea>
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="hidden" name="note" value="${note.id}">
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
 <#-->История<-->
 <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
     <div class="uk-offcanvas-bar">
@@ -185,6 +201,7 @@
 <#-->------------------------------------ Макросы---------------------------------------<-->
 <#-->-----------------------------------------------------------------------------------<-->
 
+<#--LOCKED!!! НЕ ТРОГАТЬ ТАМ НЕЧЕГО БРАТЬ, НЕЧЕГО ДОБАВЛЯТЬ-->
 <#-->Макрос рекурсии<-->
     <#macro treeView msg listReply>
     <div id="modal-reply-${msg.id}" uk-modal>
@@ -206,6 +223,7 @@
             </form>
         </div>
     </div>
+
         <#list listReply as reply>
             <#if reply.reply.toString() == msg.toString()>
                 <@message reply/>
@@ -213,18 +231,17 @@
             </#if>
         </#list>
     </#macro>
-
 <#-->Макрос построения таблицы сообщений<-->
     <#macro message msg>
+
         <tr>
             <td>
                 <p class="uk-text-center">${msg.author.username}</p>
-                <img class="uk-preserve-width uk-border-circle" src="/img/avatars/${msg.author.avatar}" width="60" alt="">
+                <img class="uk-preserve-width uk-border-circle" src="/img/avatars/${msg.author.avatar?ifExists}" width="60" alt="">
             </td>
             <td class="uk-table-link">
                 <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
-                    <li><a href="#">12 days ago</a></li>
-                    <li><a href="#modal-reply-${msg.id}" uk-toggle>Reply</a></li>
+                        <li><a href="#">${msg.difference?ifExists}</a></li>
                 </ul>
                 <#if msg.reply??>
                     <p class="uk-article-meta">
@@ -233,8 +250,6 @@
                     </p>
 
                     <p class="uk-text-large uk-margin-small">${msg.message}</p>
-
-
                 <#else>
                 <p class="uk-text-large uk-margin-small">${msg.message}</p>
                 </#if>

@@ -12,17 +12,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
+
+//TODO: Сделать работу контроллеров без редиректа.
+//TODO: Сделать отображение сообщений о выполненных операциях.
+//TODO: Задокументировать методы.
 
 @Controller
 @RequestMapping("notes")
@@ -36,9 +33,6 @@ public class NoteController {
 
     @Autowired
     private FileService fileService;
-
-    @Autowired
-    private NoteService noteService;
 
     @Autowired
     private CommentService commentService;
@@ -74,13 +68,20 @@ public class NoteController {
             @PathVariable Note note,
             Map<String, Object> model) {
 
+        List<Comment> comment = commentService.setDifference(commentRepo.findAllByNoteOrderByDate(note));
+        List<Comment> replies = commentService.setDifference(commentRepo.findAllByNoteAndReplyIsNotNull(note));
+
+        commentService.setDifference(comment);
+
+        model.put("countFile",uploadFileRepo.countAllByNote(note));
         model.put("count",commentRepo.countAllByNote(note));
         model.put("histories",historyRepo.findAllByNoteOrderByCreatedDesc(note));
         model.put("images",uploadFileRepo.findAllByNote(note));
         model.put("note", note);
-        model.put("tags",tagRepo.findAllByProject(note.getProject()));
-        model.put("comment",commentRepo.findAllByNoteOrderByDate(note));
-        model.put("replies",commentRepo.findAllByNoteAndReplyIsNotNull(note));
+        model.put("tags",tagRepo.findAllByNote(note));
+        model.put("comment",comment);
+        model.put("replies",replies);
+        model.put("today",LocalDate.now());
 
         return "note";
     }
@@ -201,6 +202,14 @@ public class NoteController {
         return "redirect:/notes/"+note.getId();
     }
 
+    /**
+     *
+     * @param user
+     * @param note
+     * @param date
+     * @param model
+     * @return
+     */
     @PostMapping(value = "dateOperate")
     public String dateOperate(
             @AuthenticationPrincipal User user,
@@ -214,6 +223,62 @@ public class NoteController {
         return "redirect:/notes/"+note.getId();
     }
 
+    /**
+     *
+     * @param user
+     * @param tag
+     * @param note
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "addtag")
+    public String addTag(
+            @AuthenticationPrincipal User user,
+            @RequestParam String tag,
+            @RequestParam Note note,
+            Map<String, Object> model) {
+        String message ="";
+        if (!tag.equals("")) {
+            Tag noteTag = new Tag();
+            noteTag.setAuthor(user);
+            noteTag.setName(tag);
+            noteTag.setNote(note);
+            noteTag.setProject(note.getProject());
+            tagRepo.save(noteTag);
+            message = "New tag added.";
+            historyService.addedTags(user,note,tag);
+        } else {
+            message = "Tag not be empty.";
+        }
+
+        model.put("countFile",uploadFileRepo.countAllByNote(note));
+        model.put("count",commentRepo.countAllByNote(note));
+        model.put("histories",historyRepo.findAllByNoteOrderByCreatedDesc(note));
+        model.put("images",uploadFileRepo.findAllByNote(note));
+        model.put("note", note);
+        model.put("tags",tagRepo.findAllByNote(note));
+        model.put("comment",commentRepo.findAllByNoteOrderByDate(note));
+        model.put("replies",commentRepo.findAllByNoteAndReplyIsNotNull(note));
+
+        return "redirect:/notes/"+note.getId();
+    }
+
+    @PostMapping(value = "{tag}")
+    public String deleteTag(
+            @AuthenticationPrincipal User user,
+            @PathVariable Tag tag,
+            Map<String, Object> model) {
+        String url = "redirect:/notes/"+tag.getNote().getId();
+        historyService.deleteTag(user, tag);
+        tagRepo.delete(tag);
+        return url;
+    }
+
+    /**
+     *
+     * @param localDate
+     * @return
+     */
     private String compare(LocalDate localDate) {
 
         LocalDate now = LocalDate.now();

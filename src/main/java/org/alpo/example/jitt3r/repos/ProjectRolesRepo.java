@@ -12,5 +12,11 @@ public interface ProjectRolesRepo extends JpaRepository<ProjectRole, Long> {
     List<ProjectRole> findAllByAuthor(User user);
     List<ProjectRole> findAllByProject(Project project);
 
+    /**
+     * Метод для проверки наличия записи в таблице при расшаривании проекта
+     * @param user принимаемый параметр User
+     * @param project принимаемый параметр Project
+     * @return возвращает уникальную запись или null
+     */
     ProjectRole findByAuthorAndProject(User user, Project project);
 }

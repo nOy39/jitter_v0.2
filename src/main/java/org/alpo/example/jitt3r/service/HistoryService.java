@@ -5,8 +5,7 @@ import org.alpo.example.jitt3r.repos.HistoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
+//TODO: Переделать конструктор new History()
 @Service
 public class HistoryService {
 
@@ -144,10 +143,44 @@ public class HistoryService {
         historyRepo.save(history);
     }
 
+    /**
+     * Метод записывает в историю информацию о изменении описания проекта
+     * @param author - авторизированный пользователь который сделал изменения
+     * @param currentProject - проект в котором изменили описание
+     */
     public void prjectChangeDescription(User author, Project currentProject) {
         String message = author.getUsername()+" edit description in "+currentProject.getProjectName();
         history = new History(message, author);
         history.setProject(currentProject);
+        historyRepo.save(history);
+    }
+
+    /**
+     *  Добавляем в историю запись о создании ТЭГА
+     * @param author - авторизированный пользователь который создал тэг
+     * @param currentNote - текущая нота
+     * @param tag - добавляемый ТЭГ
+     */
+    public void addedTags(User author, Note currentNote, String tag) {
+        String message = "<u>"+author.getUsername()+"</u> added new tag: <b>"+tag+".</b>";
+        history = new History(message, author);
+        history.setProject(currentNote.getProject());
+        history.setDesk(currentNote.getDesk());
+        history.setNote(currentNote);
+        historyRepo.save(history);
+    }
+
+    /**
+     * Удаление ТЭГА
+     * @param user - авторизированный пользователь который удаляет тэг
+     * @param tag
+     */
+    public void deleteTag(User user, Tag tag) {
+        String message = "<u>"+user.getUsername()+"</u> delete tag: <b>"+tag.getName()+".</b>";
+        history = new History(message,user);
+        history.setProject(tag.getProject());
+        history.setNote(tag.getNote());
+        history.setDesk(tag.getNote().getDesk());
         historyRepo.save(history);
     }
 }

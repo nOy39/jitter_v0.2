@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 //TODO Задокументировать нужные методы, лишнее удалить
 //TODO Сделать удаление дески
+//TODO по возможности избавиться от редиректов
 @Controller
 @RequestMapping(value = "desk")
 public class DeskController {

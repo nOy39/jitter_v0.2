@@ -24,6 +24,11 @@ public class Tag {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "note_id")
+    private Note note;
+
+
     public Tag() {
     }
 
@@ -70,6 +75,14 @@ public class Tag {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Note getNote() {
+        return note;
+    }
+
+    public void setNote(Note note) {
+        this.note = note;
     }
 
     @Override

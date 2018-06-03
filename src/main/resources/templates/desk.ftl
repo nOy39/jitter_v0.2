@@ -6,7 +6,7 @@
 <#--Название проекта-->
 <div class="uk-text-uppercase uk-text-large uk-text-primary uk-text-center" xmlns="http://www.w3.org/1999/html">
     <span>${project.projectName}</span>
-
+<#--TODO Сделать нормальный шрифт и размер досок-->
 <#--отображение досок -->
 <div uk-filter="target: .js-filter">
 <#--Сортировка-->

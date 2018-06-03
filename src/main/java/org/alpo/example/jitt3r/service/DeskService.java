@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class DeskService {
 
     /**
-     * public String getUrl()
+     * создает динамическую url для редиректа
      *
      * @param id - принимает ID проекта
      * @return - возвращает URL подставив id в строку.

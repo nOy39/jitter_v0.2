@@ -2,6 +2,8 @@ package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -21,8 +23,12 @@ public class Comment {
     /**
      * дата сохранения сообщения
      */
-    private LocalDate date;
-
+    private LocalDateTime date;
+    /**
+     * разница дат
+     */
+    @Transient
+    private String difference;
     /**
      * like message
      */
@@ -105,11 +111,11 @@ public class Comment {
         this.note = note;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -135,5 +141,13 @@ public class Comment {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public String getDifference() {
+        return difference;
+    }
+
+    public void setDifference(String difference) {
+        this.difference = difference;
     }
 }

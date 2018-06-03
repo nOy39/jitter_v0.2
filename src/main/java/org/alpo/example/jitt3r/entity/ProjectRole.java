@@ -2,6 +2,10 @@ package org.alpo.example.jitt3r.entity;
 
 import javax.persistence.*;
 
+/**
+ * Сущьность таблицы ProjectRole,
+ * таблица используется для расшаривания проектов
+ */
 @Entity
 public class ProjectRole {
 
